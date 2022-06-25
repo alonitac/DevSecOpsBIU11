@@ -22,4 +22,4 @@ jobs:
       - name: Run test cases
         run: |
           cd ex2_sol
-          influxd &
+          bash ex2_test.sh
