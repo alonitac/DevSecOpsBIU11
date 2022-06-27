@@ -1,5 +1,8 @@
+# #  docker run --rm --name influxdb -v /home/alon/Documents/DevSecOpsBIU11/ex2_sol:/sol -p 8086:8086 influxdb:1.8.10 bash /sol/ex2_test.sh
+
 set -e
 
+# start influxdb
 influxd &
 
 sleep 3
@@ -12,10 +15,14 @@ chmod +x ./availabilityAgent.sh
 #echo "127.0.0.1" > hosts
 ./availabilityAgent.sh &
 
-sleep 20
+sleep 25
+
 
 DATA=$(curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=hosts_metrics" -H "Accept: application/csv" --data-urlencode "q=SELECT * FROM \"availability_test\"")
 
+kill -15 %1
+kill -15 %2
+sleep 3
 echo
 
 if ! echo "$DATA" | grep -q 'name,tags,time,host,value'; then
