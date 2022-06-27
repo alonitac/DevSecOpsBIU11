@@ -20,8 +20,9 @@ sleep 25
 
 DATA=$(curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=hosts_metrics" -H "Accept: application/csv" --data-urlencode "q=SELECT * FROM \"availability_test\"")
 
-kill -15 %1
-kill -15 %2
+kill %1
+kill %2
+
 sleep 3
 echo
 
