@@ -1,4 +1,6 @@
-# #  docker run --rm --name influxdb -v /home/alon/Documents/DevSecOpsBIU11/ex2_sol:/sol -p 8086:8086 influxdb:1.8.10 bash /sol/ex2_test.sh
+# To run this test locally, you have to run it within the InfluxDB Docker container,
+# while mounting your code solution into /sol directory in the container
+# docker run --rm --name influxdb -v /path/to/your/repo/DevSecOpsBIU11/ex2_sol:/sol -p 8086:8086 influxdb:1.8.10 bash /sol/ex2_test.sh
 
 set -e
 
@@ -9,7 +11,10 @@ sleep 3
 curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE hosts_metrics"
 
 # run student solution script
-#cd /sol
+if [ -d "/sol" ]; then
+  cd /sol
+fi
+
 chmod +x ./availabilityAgent.sh
 ./availabilityAgent.sh &
 
