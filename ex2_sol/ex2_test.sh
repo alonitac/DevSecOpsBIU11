@@ -35,7 +35,7 @@ fi
 
 for i in "127.0.0.1,1" "_gateway,0" "google.com,1" "10.0.0.34,0"
 do
-  RES_LINES=$(echo "$DATA" | grep -q $i | wc -l)
+  RES_LINES=$(echo "$DATA" | grep $i | wc -l)
   IFS=',' read -ra SINGLE_TEST_DATA <<< "$i"
   if ((RES_LINES < 3)); then
     echo "Bad test results for ${SINGLE_TEST_DATA[0]}. Expected at least 3 availability test with result  ${SINGLE_TEST_DATA[1]}."
