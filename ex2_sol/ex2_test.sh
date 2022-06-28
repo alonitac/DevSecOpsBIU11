@@ -1,6 +1,6 @@
 # #  docker run --rm --name influxdb -v /home/alon/Documents/DevSecOpsBIU11/ex2_sol:/sol -p 8086:8086 influxdb:1.8.10 bash /sol/ex2_test.sh
 
-set -xe
+set -e
 
 # start influxdb
 influxd &
@@ -37,7 +37,7 @@ for i in "127.0.0.1,1" "_gateway,0" "google.com,1" "10.0.0.34,0"
 do
   RES_LINES=$(echo "$DATA" | grep -c $i)
   if ((RES_LINES < 3)); then
-    >&2 printf "bad number of tests"
+    echo "bad number of tests"
     exit 1
   fi
 done
