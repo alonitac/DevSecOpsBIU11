@@ -1,6 +1,6 @@
 # #  docker run --rm --name influxdb -v /home/alon/Documents/DevSecOpsBIU11/ex2_sol:/sol -p 8086:8086 influxdb:1.8.10 bash /sol/ex2_test.sh
 
-set -e
+set -xe
 
 # start influxdb
 influxd &
