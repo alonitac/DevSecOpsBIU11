@@ -8,9 +8,9 @@ set -e
 influxd &
 
 sleep 3
+# create a db
 curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE hosts_metrics"
 
-# run student solution script
 if [ -d "/sol" ]; then
   cd /sol
 fi
@@ -18,8 +18,10 @@ fi
 chmod +x ./availabilityAgent.sh
 ./availabilityAgent.sh &
 
+# wait for the availability tests to be performed at least 3 times
 sleep 25
 
+# get the tests data from influx
 DATA=$(curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=hosts_metrics" -H "Accept: application/csv" --data-urlencode "q=SELECT * FROM \"availability_test\"")
 
 echo "Your test data as found in InfluxDB:"
