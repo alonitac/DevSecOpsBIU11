@@ -18,11 +18,12 @@ sleep 25
 DATA=$(curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=hosts_metrics" -H "Accept: application/csv" --data-urlencode "q=SELECT * FROM \"availability_test\"")
 
 echo "Your test data as found in InfluxDB:"
+echo
 echo "$DATA"
 echo
 
 if ! echo "$DATA" | grep -q 'name,tags,time,host,value'; then
-  >&2 printf "Bad db columns. Expected to get 'name,tags,time,host,value' but found \'$DATA\'"
+  >&2 printf "Bad db columns. Expected 'name,tags,time,host,value'"
   exit 1
 fi
 
@@ -34,10 +35,10 @@ fi
 
 for i in "127.0.0.1,1" "_gateway,0" "google.com,0" "10.0.0.34,0"
 do
-  set -- $i
   RES_LINES=$(echo "$DATA" | grep -q -c $i)
+  IFS=',' read -ra SINGLE_TEST_DATA <<< "$i"
   if ((RES_LINES < 3)); then
-    echo "Bad test results for $1. Expected at least 3 availability test with result $2."
+    echo "Bad test results for ${SINGLE_TEST_DATA[0]}. Expected at least 3 availability test with result  ${SINGLE_TEST_DATA[1]}."
     exit 1
   fi
 done
