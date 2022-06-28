@@ -36,7 +36,7 @@ if ! echo "$DATA" | grep -q "availability_test"; then
   exit 1
 fi
 
-for i in "127.0.0.1,1" "_gateway,0" "google.com,1" "10.0.0.34,0"
+for i in "127.0.0.1,1" "_gateway,0" "google.com,0" "10.0.0.34,0"
 do
   RES_LINES=$(echo "$DATA" | grep -c $i)
   if ((RES_LINES < 3)); then
