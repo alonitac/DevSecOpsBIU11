@@ -1,22 +1,28 @@
 # ....code written here before...
 
 # your changes:
-
-#print greeting to console when user logs in
+#!/bin/bash
+#print greeting to console
 echo Hello $USER
 
-#check for outdated packages to update
+#check if there are outdated packages
 /usr/lib/update-notifier/apt-check --human-readable
 
-#set variable file, assign .token to variable
-file='.token'
+#assign variable file for .token file
+file="~/.token"
 
-#check if .token exists and its permission levels if exists
-if [[ -f $file && `stat -c %a $file` != 600 ]] ; then
-#if different from 600, print warning
-echo 'Warning: .token file has too open permissions'
+#check if file exists
+#check if permissions are too open, if yes, print warning
+#if file does not exist, do nothing
+if [[ -f $file && `stat -c %a $file` != 600 ]]
+then
+    echo "Warning: .token file has too open permissions"
+
+elif [[ -f $file && `stat -c %a $file` == 600 ]]
+then
+    echo "Info: .token file permission settings are good"
 
 else
-# if == 600, print info message
-echo 'INFO | .token file has good permission settings.'
+    :
+
 fi
