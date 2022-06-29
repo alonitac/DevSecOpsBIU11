@@ -1,7 +1,7 @@
 # ....code written here before...
 
 # your changes:
-#!/bin/bash
+
 #print greeting to console when user logs in
 echo Hello $USER
 
@@ -13,11 +13,10 @@ file='.token'
 
 #check if .token exists and its permission levels if exists
 if [[ -f $file && `stat -c %a $file` != 600 ]] ; then
-
-#if true print to console
+#if different from 600, print warning
 echo 'Warning: .token file has too open permissions'
 
 else
+# if == 600, print info message
 echo 'INFO | .token file has good permission settings.'
-
 fi
