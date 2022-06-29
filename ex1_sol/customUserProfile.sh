@@ -1,5 +1,7 @@
 
 
+
+
 #!/bin/bash
 
 echo Hello $USER
@@ -8,9 +10,10 @@ echo Hello $USER
 TOKEN=600
 FILE=~/.token
 if [ -f "$FILE" ]; then
-    echo "$FILE exists."
+    echo "token exists."
 fi
 xx=$( stat -c '%a' $FILE)
 if [ "$TOKEN" -ne "$xx" ]; then
     echo "Warning: .token file has too open permissions."
 fi
+
