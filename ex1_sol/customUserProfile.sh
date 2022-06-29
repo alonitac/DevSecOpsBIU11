@@ -4,9 +4,9 @@
 #!/bin/bash
 
 # greeting variable
-greeting="Hello " $USER
+greeting="Hello" $USER
 # print greeting to console
-echo $greeting
+echo "Hello " $USER
 
 # print number of available pkg updates
 /usr/lib/update-notifier/apt-check --human-readable
