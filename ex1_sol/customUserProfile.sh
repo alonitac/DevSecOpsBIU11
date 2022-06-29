@@ -1,4 +1,4 @@
-echo hello $USER
+echo Hello $USER
 
 /usr/lib/update-notifier/apt-chack --human-readable
 
