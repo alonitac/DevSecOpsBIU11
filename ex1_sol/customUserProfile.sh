@@ -3,19 +3,12 @@
 # your changes:
 #!/bin/bash
 #print greeting to console
-echo Hello $USER
-
-#check if there are outdated packages
+echo "Hello" $USER
 /usr/lib/update-notifier/apt-check --human-readable
+TOKEN="$HOME/.token"
+if [[ -f $TOKEN && `stat -c %a $TOKEN` -ne 600 ]]
+then
 
-#assign variable file for .token file
-file="~/.token"
+    echo 'Warning: .token file has too open permissions'
 
-#check if file exists
-#check if permissions are too open, if yes, print warning
-#if file does not exist, do nothing
-if [ -f $file ]; then
-  if [ $(stat -c "%a" $file) -ne 600 ]; then
-        echo 'Warning: .token file has too open permissions'
-  fi
 fi
