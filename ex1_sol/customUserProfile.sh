@@ -1,6 +1,6 @@
 echo Hello $USER
 
-/usr/lib/update-notifier/apt-chack --human-readable
+/usr/lib/update-notifier/apt-check --human-readable
 
 if [ -f ~/.token ]; then
   if [ $(stat -c "%a" ~/token) -ne 600 ]; then
