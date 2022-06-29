@@ -15,5 +15,5 @@ fi
 
 if [ "$PER" -ne "600" ]
 then
-  echo "Warning: .token file has too open permissions"
+  echo 'Warning: .token file has too open permissions'
 fi
