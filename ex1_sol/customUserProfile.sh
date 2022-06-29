@@ -3,10 +3,8 @@
 # your changes:
 #!/bin/bash
 
-# greeting variable
-greeting="Hello" $USER
-# print greeting to console
-echo "Hello " $USER
+# print greeting
+echo "Hello" $USER
 
 # print number of available pkg updates
 /usr/lib/update-notifier/apt-check --human-readable
