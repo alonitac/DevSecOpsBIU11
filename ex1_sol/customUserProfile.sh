@@ -2,13 +2,18 @@
 
 echo "****Hello $USER****"
 echo `/usr/lib/update-notifier/apt-check --human-readable`
-FILE=$HOME/.token
-PER='"stat -c "%a"'
-if [ -f $FILE ]; then
+TOKEN=600
+FILE=~/.token
+PER=$(sudo stat -c '%a' $FILE)
+if [ -f $FILE ]
+then
   echo "**File Exist**"
+
 else
   echo "**File Not Exist**"
+fi
 
-if [ $PER $FILE" -ne 600 ] ; then
+if [ "$PER" -ne "600" ]
+then
   echo "**Warning: .token file has too open permissions**"
 fi
