@@ -14,14 +14,8 @@ file="~/.token"
 #check if file exists
 #check if permissions are too open, if yes, print warning
 #if file does not exist, do nothing
-if [[ -f $file && `stat -c %a $file` -ne 600 ]]
-then
-    echo "Warning: .token file has too open permissions"
-
-elif [[ -f $file && `stat -c %a $file` -eq 600 ]]
-then
-    echo "Info: .token file permission settings are good"
-
-else
-    :
+if [ -f $file ]; then
+  if [ $(stat -c "%a" $file) -ne 600 ]; then
+        echo 'Warning: .token file has too open permissions'
+  fi
 fi
