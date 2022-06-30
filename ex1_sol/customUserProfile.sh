@@ -5,7 +5,7 @@ echo Hello "$USER"
 
 # shellcheck disable=SC2164
 cd /home
-sudo touch .token
+touch .token
 
 FILE=~/.token
 
