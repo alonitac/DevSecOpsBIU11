@@ -4,7 +4,7 @@ TEST_PERIODICITY=5
 while true
 do
     while read x; do
-      ping -c 1 $x &> /dev/null 2>&1
+      ping -c 1 -W 1 $x &> /dev/null 2>&1
       RESULT=$?
       if [[ "$RESULT" -ne "0" ]]; then
           RESULT=1
