@@ -6,7 +6,7 @@ do
     while read x; do
       ping -c 1 $x &> /dev/null 2>&1
       RESULT=$?
-      if [[ "$RESULT" -nq "0" ]]; then
+      if [[ "$RESULT" -ne "0" ]]; then
           RESULT=1
       fi
       echo "Test result for $x is $RESULT at `data +%s%N`"
