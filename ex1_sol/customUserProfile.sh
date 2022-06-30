@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "****Hello $USER****"
-echo`/usr/lib/update-notifier/apt-check --human-readable`
+/usr/lib/update-notifier/apt-check --human-readable
 TOKEN=600
 FILE=~/.token
 PER=$(sudo stat -c '%a' $FILE)
