@@ -9,7 +9,7 @@ do
       if [[ "$RESULT" -ne "0" ]]; then
           RESULT=1
       fi
-      echo "Test result for $x is $RESULT at `data +%s%N`"
+      echo "Test result for $x is $RESULT at `date +%s%N`"
       curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$x value=$RESULT `date +%s%N`"
     done < hosts
     sleep $TEST_PERIODICITY
