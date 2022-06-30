@@ -9,4 +9,6 @@ PER=$(sudo stat -c '%a' $FILE)
 if [[ -f $FILE && "$PER" -ne "600" ]]
 then
   echo "**Warning: .token file has too open permissions**"
+else
+  echo
 fi
