@@ -1,3 +1,10 @@
+###  customUserProfile ###
+echo "Hello $USER"
+
+/usr/lib/update-notifier/apt-check --human-readable # check outdated packages
+
+stat -c "%a"
+
 echo Hello $USER
 
 /usr/lib/update-notifier/apt-check --human-readable
