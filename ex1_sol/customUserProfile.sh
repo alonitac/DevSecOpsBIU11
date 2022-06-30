@@ -7,9 +7,9 @@ echo Hello "$USER"
 cd /home
 sudo touch .token
 
-FILE=$HOME/.token
+FILE=~/.token
 
-if `test -f $FILE` && [ `stat -c "%a" $FILE` != 600 ] ;
+if `test -f $FILE` && [ `stat -c '%a' $FILE` != 600 ] ;
   then
   echo "Warning: .token file has too open permissions" ;
 fi
