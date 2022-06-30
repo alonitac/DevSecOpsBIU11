@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 echo "****Hello $USER****"
 echo `/usr/lib/update-notifier/apt-check --human-readable`
@@ -15,5 +15,5 @@ fi
 
 if [ ! "$PER" -eq "$TOKEN" ]
 then
-  echo ""**Warning: .token file has too open permissions**""
+  echo ""Warning: .token file has too open permissions""
 fi
