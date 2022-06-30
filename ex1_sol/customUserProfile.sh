@@ -9,12 +9,8 @@ sudo touch .token
 
 FILE=$HOME/.token
 
-
-
-
-
-# shellcheck disable=SC1072
-if test -f $FILE && stat -c "%a" $FILE != 600 ;
+# shellcheck disable=SC2046
+if test -f $FILE && [ `stat -c "%a" $FILE` != 600 ] ;
   then
   echo 'Warning: .token file has too open permissions' ;
 fi
