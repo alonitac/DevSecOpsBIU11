@@ -4,7 +4,7 @@ TEST_PERIODICITY=5
 while true; do
 filename="hosts"
 ErrorLevel=$?
-while read l; do
+while IFS='' read -r l || [[ -n "$l" ]]; do
 ping -c 1 $l
 if [[ $ErrorLevel -eq 1 ]]; then
     echo success
