@@ -7,7 +7,7 @@ while true; do
 filename='hosts'
 #Start ping loop
 while read l; do
-ping -c 1 $l &> /dev/null 2>&1
+ping -c 1 $l
 ErrorLevel=$?
 if [[ $ErrorLevel -eq 1 ]]
 then
