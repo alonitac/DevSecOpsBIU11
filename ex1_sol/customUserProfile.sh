@@ -12,6 +12,6 @@ PERMISSIONS=600
 # Script
 if [ -f $TOKEN_PATH ]; then
 	if stat -c %a $TOKEN_PATH | grep -q -v $PERMISSIONS; then
-		echo "Warning: $TOKEN has to open permissions"
+		echo "Warning: $TOKEN has too open permissions"
         fi
 fi
