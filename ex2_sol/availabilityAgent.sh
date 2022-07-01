@@ -9,9 +9,9 @@ ErrorLevel=$?
 #Start ping loop
 while read l; do
 ping -c 1 $l
-if [[ $ErrorLevel -eq 0 ]]
+if [[ $ErrorLevel -eq 1 ]]
 then
-    echo fail to run command
+    echo success
 fi
     echo Test result for $l is $ErrorLevel at $(date +%s%N)
 done < $filename
