@@ -11,7 +11,7 @@ while read l; do
 ping -c 1 $l
 if [[ $ErrorLevel -eq 0 ]]
 then
-    echo fail to run command: ping -c 1 $l
+    echo fail to run command
 fi
     echo Test result for $l is $ErrorLevel at $(date +%s%N)
 done < $filename
