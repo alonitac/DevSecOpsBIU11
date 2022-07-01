@@ -13,7 +13,7 @@ if [[ $ErrorLevel -eq 1 ]]
 then
     echo success
 fi
-    echo Test result for $l is $ErrorLevel at $(date +%s%N)
+     curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$l value=$ErrorLevel `date +%s%N`"
 done < $filename
 sleep $TEST_PERIODICITY
 done
