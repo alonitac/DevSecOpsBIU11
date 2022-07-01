@@ -5,10 +5,10 @@ TEST_PERIODICITY=5
 while true; do
 #set variables
 filename='hosts'
-ErrorLevel=$?
 #Start ping loop
 while read l; do
-ping -c1 $l
+ping -c 1 $l &> /dev/null 2>&1
+ErrorLevel=$?
 if [[ $ErrorLevel -eq 1 ]]
 then
     echo success
