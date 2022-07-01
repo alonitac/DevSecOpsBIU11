@@ -8,8 +8,8 @@ filename='hosts'
 #Start ping loop
 while read l; do
 ping -c 1 $l
-ErrorLevel=$?
-if [[ $ErrorLevel -eq 1 ]]
+#ErrorLevel=$?
+if [[ $? -eq 1 ]]
 then
     echo success
 fi
