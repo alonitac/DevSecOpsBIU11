@@ -14,7 +14,7 @@ else
     echo fail
 fi
 echo Test result for $output is $ErrorLevel at `date +%s%N`
-curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$output value=$ErrorLevel `date +%s%N`"
+curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$filename value=$ErrorLevel `date +%s%N`"
 done < "$filename"
 sleep $TEST_PERIODICITY
 done
