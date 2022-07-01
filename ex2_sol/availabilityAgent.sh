@@ -1,9 +1,9 @@
 #!/bin/bash
 
 TEST_PERIODICITY=5
-while read l; do
 filename='hosts'
 ErrorLevel=$?
+while read l; do
 ping -c 1 $l
 if [[ $ErrorLevel -eq 1 ]]; then
     echo success
