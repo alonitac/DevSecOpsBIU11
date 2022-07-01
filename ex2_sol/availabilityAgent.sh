@@ -5,7 +5,7 @@ TEST_PERIODICITY=5
 while true; do
 filename='hosts'
 ErrorLevel=$?
-cat /home/ron/hosts |  while read output
+while read output
 do
     ping -c 1 "$output" > /dev/null
     if [ $ErrorLevel -eq 0 ]; then
