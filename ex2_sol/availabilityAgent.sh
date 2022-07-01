@@ -5,17 +5,17 @@ TEST_PERIODICITY=5
 while true; do
 filename='hosts'
 ErrorLevel=$?
-while read output
+while read filename
 do
-    ping -c 1 "$output" > /dev/null
+    ping -c 1 "$filename" > /dev/null
     if [ $ErrorLevel -eq 0 ]; then
     echo success
 else
     echo fail
 fi
-echo Test result for $output is $ErrorLevel at `date +%s%N`
+    echo Test result for $output is $ErrorLevel at `date +%s%N`
 curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$filename value=$ErrorLevel `date +%s%N`"
-done < "$filename"
+done < $filename
 sleep $TEST_PERIODICITY
 done
 
