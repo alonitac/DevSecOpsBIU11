@@ -7,7 +7,7 @@ while true; do
   RESULT=$?
   TS=$(date +%s%N)
   for TESTED_HOST in $(cat ./hosts); do #thanks to yitav!!!!!!! i went with while and not for!!!!!
-  ping -c 1 -W 1 $TESTED_HOST > /dev/null
+  ping -c 1 $TESTED_HOST > /dev/null
   if [ $RESULT -eq 0 ]; then
     $RESULT=1
   else
