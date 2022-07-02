@@ -7,7 +7,7 @@ while true; do
 RESULT=$?
 #test case
   for TESTED_HOST in $(cat ./hosts); do #thanks to yitav!!!!!!! i went with while and not for!!!!!
-  ping -c 1 -t 1 $TESTED_HOST > /dev/null 2>&1 &&
+  ping -c 1 $TESTED_HOST > /dev/null 2>&1 &&
   if [ $RESULT -eq 0 ]; then
   $RESULT=1
   else
