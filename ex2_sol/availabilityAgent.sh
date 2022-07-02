@@ -1,25 +1,25 @@
 #!/bin/bash
 
 TEST_PERIODICITY=5
-#main loop
+
 while true; do
-#set variables
-RESULT=$?
-#test case
+
+  RESULT=$?
+  TS=$(date +%s%N)
   for TESTED_HOST in $(cat ./hosts); do #thanks to yitav!!!!!!! i went with while and not for!!!!!
-  ping -c 1 $TESTED_HOST > /dev/null 2>&1 &&
+  ping -c 1 $TESTED_HOST > /dev/null
   if [ $RESULT -eq 0 ]; then
   $RESULT=1
   else
   $RESULT=0
   fi
 #print results
-     echo Test result for $TESTED_HOST is $RESULT at `date +%s%N`
+     echo Test result for $TESTED_HOST is $RESULT at $TS
 #influxdb
-curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT `date +%s%N`"
-#goodbye
-done < hosts
+  curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TS"
+
 sleep $TEST_PERIODICITY
+
 done
 
 
