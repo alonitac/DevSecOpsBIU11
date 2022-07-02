@@ -1,21 +1,54 @@
-
 #!/bin/bash
 
 TEST_PERIODICITY=5
 while true; do
 filename='hosts'
-ErrorLevel=$?
-while read filename
-do
-    ping -c 1 "$filename" > /dev/null
-    if [ $ErrorLevel -eq 0 ]; then
-    echo success
-else
-    echo fail
+RESULT=$?
+while read TESTED_HOST; do
+ping -c 1 "$TESTED_HOST" > /dev/null
+if [ $RESULT -eq 0 ]; then
+        echo Test result for $TESTED_HOST is $RESULT at `date +%s%N`
+curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT `date +%s%N`"
 fi
-    echo Test result for $output is $ErrorLevel at `date +%s%N`
-curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$filename value=$ErrorLevel `date +%s%N`"
-done < $filename
+done < "$filename"
+sleep $TEST_PERIODICITY
+done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+##!/bin/bash
+#
+#TEST_PERIODICITY=5
+#while true; do
+#filename='hosts'
+#RESULT=$?
+#while read hostname
+#do
+#    ping -c 1 -t 1 "$RESULT" > /dev/null 2>&1 &&
+#    if [ $ErrorLevel -eq 0 ]; then
+#    echo success
+#else
+#    echo fail
+#fi
+#    echo Test result for $output is $ErrorLevel at `date +%s%N`
+#curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TEST_TIMESTAMP" `date +%s%N`"
+#done < 'hosts'
 sleep $TEST_PERIODICITY
 done
 
