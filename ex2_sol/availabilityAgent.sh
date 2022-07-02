@@ -5,8 +5,8 @@ do
     # your implementation here
     for TESTED_HOST in $(cat ./hosts)
     do
-        ping -c 1 $TESTED_HOST &> /dev/null
         TEST_TIMESTAMP=$(date +%s%N)
+        ping -c 1 $TESTED_HOST &> /dev/null
         if [ "$?" -eq 0 ]; then RESULT=1; else RESULT=0; fi
         echo "Test result for $TESTED_HOST is $RESULT at $TEST_TIMESTAMP"
 
