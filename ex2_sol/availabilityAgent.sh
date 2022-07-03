@@ -1,10 +1,6 @@
-#!/bin/bash
+
 TEST_PERIODICITY=5
-file1="/home/simon/hosts"
-#!/bin/bash
-TEST_PERIODICITY=5
-file1="/home/simon/hosts"
-HOSTS=$(cat "$file1")
+
 while true
 do
     for TESTED_HOST in $HOSTS
