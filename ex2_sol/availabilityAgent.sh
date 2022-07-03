@@ -2,27 +2,20 @@
 
 TEST_PERIODICITY=5
 
-#HOST_NAME_IP=${awk 'NR==i {print $1}' /etc/hosts}
+HOST_FILE=/home/jonathan/hosts.txt
 
-HOSTNAME_IP=""
-RESULT=""
-PING_RESULTS=""
-NUM=0
-TIME_NS=0
 
 while true
 do
-    while [[ $HOSTNAME_IP != "" ]]
-    do
-      HOSTNAME_IP=$(awk 'NR==NUM {print $1}' /etc/hosts)
-      ping -c 1 HOSTNAME_IP
-      echo "Test result for $HOSTNAME_IP is $RESULT at $TIME_NS"
-
-
-      NUM +=
-      done
+        while read host
+        do
+                RESULTS=$(ping -c 1 ${host})
+                TIME=$(awk 'BEGIN { FS="=" } {print $3}' $RESULTS)
+                if [[ $? != 1 ]]; then
+                        echo Test result for ${host} is $TIME
+                else
+                        echo Failed
+                fi
+        done < hosts.txt
     sleep $TEST_PERIODICITY
 done
-
-
-
