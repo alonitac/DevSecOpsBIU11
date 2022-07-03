@@ -1,4 +1,3 @@
-#!/bin/bash
 TEST_PERIODICITY=5
 while true;do
   for TESTED_HOST in $(cat ./hosts);do
