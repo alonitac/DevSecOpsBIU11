@@ -3,7 +3,7 @@ TEST_PERIODICITY=5
 while true
 do
 for TESTED_HOST in $(cat ./hosts); do
-    TS=$(date +%s%N)
+    TEST_TIMSTAMP=$(date +%s%N)
     ping -c 1 $TESTED_HOST &> /dev/null
     if [ "$?" -eq 0 ]
     then
@@ -11,8 +11,8 @@ for TESTED_HOST in $(cat ./hosts); do
     else
       RESULT=1
     fi
-        echo "Test result for $TESTED_HOST is $RESULT at $TS"
-    curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TS"
+        echo "Test result for $TESTED_HOST is $RESULT at $TEST_TIMSTAMP"
+    curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TEST_TIMSTAMP"
     done
 sleep $TEST_PERIODICITY
 done
