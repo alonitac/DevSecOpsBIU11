@@ -8,15 +8,17 @@ while read line; do
         EC=$?
         TEST_TIMESTAMP=$(date +%s%N)
                 if [  "$EC" -eq "0" ]; then
-                echo Test result for ${line} is 1 at $TEST_TIMESTAMP
-                curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$line value=1 $TEST_TIMESTAMP"
+                RESULT=1
                 else
-                echo Test result for ${line} is 0 at $TEST_TIMESTAMP
-                curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$line value=0 $TEST_TIMESTAMP"
+                RESULT=0
                 fi
+                echo Test result for ${line} is $RESULT at $TEST_TIMESTAMP
+                curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$line value=$RESULT $TEST_TIMESTAMP"
+
 done < hosts
 echo
 sleep $TEST_PERIODICITY
 done
+
 
 
