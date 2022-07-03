@@ -5,7 +5,7 @@ do
 for TESTED_HOST in $(cat ./hosts); do
     TS=$(date +%s%N)
     ping -c 1 $TESTED_HOST &> /dev/null
-    if [ '$?' -eq 0 ]
+    if [ "$?" -eq 0 ]
     then
       RESULT=0
     else
