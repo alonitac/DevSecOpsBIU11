@@ -3,17 +3,17 @@ TEST_PERIODICITY=5
 while true
 do
 for TESTED_HOST in $(cat ./hosts); do
-
+    ErrorLevel=$?
+    TS=$(date +%s%N)
     ping -c 1 $TESTED_HOST &> /dev/null
-    if [ "$?" -eq 0 ]
+    if [ $ErrorLevel -eq 0 ]
     then
-    #output=$(ping -c 1 $TESTED_HOST | cut -d' ' -f8)
       RESULT=0
     else
       RESULT=1
     fi
-        echo "Test result for $TESTED_HOST is $RESULT at $(date +%s%N)"
-    curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $(date +%s%N)"
+        echo "Test result for $TESTED_HOST is $RESULT at $TS"
+    curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TS"
     done
 sleep $TEST_PERIODICITY
 done
