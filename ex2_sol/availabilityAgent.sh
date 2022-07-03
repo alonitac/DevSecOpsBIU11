@@ -8,7 +8,7 @@ while true; do
   TS=$(date +%s%N)
   for TESTED_HOST in $(cat ./hosts); do #thanks to yitav!!!!!!! i went with while and not for!!!!!
   ping -c 1 $TESTED_HOST > /dev/null
-  if [ '$?' -eq 0 ]; then
+  if [ $RESULT -eq 0 ]; then
     RESULT=1
   else
     RESULT=0
@@ -17,6 +17,7 @@ while true; do
      echo Test result for $TESTED_HOST is $RESULT at $TS
 #influxdb
   curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TS"
+done
 
 sleep $TEST_PERIODICITY
 
