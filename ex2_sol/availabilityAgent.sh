@@ -5,7 +5,7 @@ do
 while read TESTED_HOST; do
   if [[ ! -z "$TESTED_HOST" ]]
   then
-      ping -c 1 "${TESTED_HOST}" >/dev/null
+      ping -c 1 "${TESTED_HOST}" -W 4 &>/dev/null
       if [ $? -ne 0 ]; then
       	RESULT=1
       else
