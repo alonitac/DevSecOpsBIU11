@@ -4,7 +4,7 @@ while true
 do
 for TESTED_HOST in $(cat ./hosts); do
     TEST_TIMESTAMP=$(date +%s%N)
-    ping -c 1 $TESTED_HOST &> /dev/null
+    ping -c 1 -W 1 $TESTED_HOST &> /dev/null
     if [ "$?" -eq 0 ]
     then
       RESULT=0
