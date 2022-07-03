@@ -4,7 +4,7 @@ while true
 do
   while read line
   do
-        ping -c 1 $line &> /dev/null
+        ping -c 1 -W 1 $line &> /dev/null
         if [ $? -eq 0 ]
                 then
                 RESULT=1
