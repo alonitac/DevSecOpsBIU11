@@ -4,7 +4,7 @@ while true
 do
 
 while read TESTED_HOST; do
-  ping -c 1 "${TESTED_HOST}" -W 1 &>/dev/null
+  ping "${TESTED_HOST}" -c 1 -W 1 &>/dev/null
   if [ $? -ne 0 ]; then
     RESULT=1
   else
