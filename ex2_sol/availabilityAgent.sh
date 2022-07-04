@@ -4,7 +4,7 @@ TEST_PERIODICITY=5
 
 while true
 do
-    # your implementation here
+    # implementation here
     while read TESTED_HOST # iterate over the lines of file hosts
     do
         ping -c 1 -W 1 "$TESTED_HOST" &> /dev/null # single ping for each TESTED_HOST (line) with timeout of 1 sec
