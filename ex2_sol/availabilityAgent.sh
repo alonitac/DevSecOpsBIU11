@@ -3,7 +3,7 @@ TEST_PERIODICITY=5
 while true
 do
 while read TESTED_HOST; do
-  ping -c 1 -W 0 "${TESTED_HOST}" &>/dev/null
+  ping -c 1 -W 1 "${TESTED_HOST}" &>/dev/null
   if [ $? -ne 0 ]; then
     RESULT=1
   else
