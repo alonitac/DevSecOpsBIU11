@@ -2,9 +2,8 @@ TEST_PERIODICITY=5
 
 while true
 do
-
 while read TESTED_HOST; do
-  ping "${TESTED_HOST}" -c 1 -W 0 &>/dev/null
+  ping -c 1 -W 0 "${TESTED_HOST}" &>/dev/null
   if [ $? -ne 0 ]; then
     RESULT=1
   else
@@ -14,7 +13,6 @@ while read TESTED_HOST; do
   echo "Test result for ${TESTED_HOST} is ${RESULT} at ${TEST_TIMESTAMP}"
   curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TEST_TIMESTAMP"
 done < hosts
-
     sleep $TEST_PERIODICITY
 done
 
