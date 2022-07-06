@@ -12,6 +12,7 @@ while true;do
       curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TEST_TIMESTAMP"
     done
 sleep $TEST_PERIODICITY;
+
 done
 
 
