@@ -1,3 +1,5 @@
+#!/bin/bash
+HOSTS=$(cat ./hosts)
 TEST_PERIODICITY=5
 
 while true
