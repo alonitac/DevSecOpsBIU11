@@ -8,9 +8,9 @@ for TESTED_HOST in $(cat ./hosts)
 do
  bb=$(ping -c 1 -W 1 $TESTED_HOST | grep 'transmitted,' | awk '{print $4}')
      if [[ $bb = 0 ]]; then
-       RESULT=1
-     else
        RESULT=0
+     else
+       RESULT=1
       fi
 TEST_TIMESTAMP=$(date +%s%N)
 echo "Test result for $TESTED_HOST is $RESULT at $TEST_TIMESTAMP"
