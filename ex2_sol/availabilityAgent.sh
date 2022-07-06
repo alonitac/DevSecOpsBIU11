@@ -20,7 +20,6 @@ done
 
 
 
-
     sleep $TEST_PERIODICITY
 done
 
