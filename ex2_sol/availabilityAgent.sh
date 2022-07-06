@@ -1,11 +1,10 @@
 #!/bin/bash
-HOSTS=$(cat ./hosts)
 TEST_PERIODICITY=5
 
 while true
 do
 
-for TESTED_HOST in $HOSTS
+for TESTED_HOST in $(cat ./hosts)
 do
  bb=$(ping -c 1 -W 1 $TESTED_HOST | grep 'transmitted,' | awk '{print $4}')
      if [[ $bb = 0 ]]; then
