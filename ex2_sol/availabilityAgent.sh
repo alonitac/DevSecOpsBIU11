@@ -2,7 +2,7 @@ TEST_PERIODICITY=5
 while true;do
     for TESTED_HOST in $(cat ./hosts);do
         TEST_TIMESTAMP=$(date +%s%N)
-        RESULT=$($?)
+        RESULT=$?
         ping -c 1 -W 1 $TESTED_HOST &> /dev/null
         if [ $RESULT -eq 0 ]
         then RESULT=1
