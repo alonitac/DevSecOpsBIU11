@@ -1,10 +1,8 @@
 #!/bin/bash
 
 TEST_PERIODICITY=5
-HOST_FILE=/home/jonathan/hosts.txt
-NANOSECONDS=1000000
-TEST_TIMESTAMP=$(( ($( date +%s%N)/$NANOSECONDS )))
-
+#TEST_TIMESTAMP=$(( ($( date +%s%N)/$NANOSECONDS )))
+TEST_TIMESTAMP=$(date +%s%N)
 
 while true
 do
