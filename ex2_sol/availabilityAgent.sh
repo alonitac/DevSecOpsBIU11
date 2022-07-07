@@ -16,7 +16,7 @@ do
                 fi
                         echo Test result for ${host} is $RESULT at $TEST_TIMESTAMP
                         curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=${host} value=$RESULT $TEST_TIMESTAMP"
-        done < hosts.txt
+        done < hosts
         echo
     sleep $TEST_PERIODICITY
 done
