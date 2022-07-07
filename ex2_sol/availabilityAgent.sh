@@ -8,7 +8,7 @@ while true
 do
         while read host
         do
-                ping -c 1 -w ${host} > /dev/null 2>&1
+                ping -c 1 -w 1 ${host} > /dev/null 2>&1
                 if      [[ $? == 0 ]] ; then
                         RESULT=1
                 else
