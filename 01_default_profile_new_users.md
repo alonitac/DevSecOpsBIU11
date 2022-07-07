@@ -6,12 +6,12 @@ In this exercise, you will implement a bash script which applies default Bash pr
 
 Open (or clone if you didn't do it yet: Git -> clone...) [our shared git repo](https://github.com/alonitac/DevOpsMay22.git) in PyCharm and pull the repository ![Pull Button](img/pull.png) to get an up-to-date version of the repository. 
 From Pycharm button right bar, create your own git branch (Git branches will be discussed later):
-
+h2.
 ![New Branch](img/branch.png)
 
 Then change `<alias>` to your nickname. e.g. `bash_ex1/alonit`. The branch name must start with `bash_ex1/`
 
-![Branch Name](img/branch2.png)
+![Branch Name](img/brancpng)
 
 Great. Let's get started... 
 
