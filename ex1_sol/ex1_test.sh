@@ -1,4 +1,5 @@
-set -e
+
+++set -e
 
 # run student solution script
 chmod +x ./customUserProfile.sh
