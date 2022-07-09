@@ -24,8 +24,10 @@ do
     # Mission 3
     echo "Test result for $TESTED_HOST is $RESULT at $TEST_TIMESTAMP"
     # Mission 4
-    # After installing the influxdb container and creating the 'hosts_metrics' DB
-    curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TEST_TIMESTAMP"
+    # After running the influxdb container and creating the 'hosts_metrics' DB
+    if [  "$(docker ps -q -f name=influxdb)" ]; then
+      curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TEST_TIMESTAMP"
+    fi
 
   done <hosts
 
