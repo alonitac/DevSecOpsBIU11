@@ -2,34 +2,37 @@ TEST_PERIODICITY=5
 
 while true
 do
+  # shellcheck disable=SC2162
   # Mission1
   while read TESTED_HOST; do
     # Mission2
-    # Ping a host and check if the host is unreachable.
-    # If it's unreachable, put a result on the '/tmp/availabilityAgent_result' file.
-    ping -c 1 "$TESTED_HOST"  | grep 'Unreachable' > /tmp/availabilityAgent_result 2>/dev/null
-    if [[ -s /tmp/availabilityAgent_result ]]; then
-      # If there is (Which means 'Unreachable'), RESULT equal to 0. Else, RESULT equal to 1.
+    # Ping a host in background. If successful, RESULT will be equal to 1, else to 0
+    ping $TESTED_HOST -c 1 -W 1 &> /dev/null
+    if [[ $? -ne 0 ]]; then
       RESULT=0
     else
       RESULT=1
     fi
 
-    # Reset the '/tmp/availabilityAgent_result' file.
-    sudo cat /dev/null > /tmp/availabilityAgent_result
-
-    # Get the timestamp in nanoseconds and put it to a variable.
+    # Get the timestamp in nanoseconds and put it to a variable
     TEST_TIMESTAMP="$(date +%s%N)"
 
-    # Mission 3
-    echo "Test result for $TESTED_HOST is $RESULT at $TEST_TIMESTAMP"
-    # Mission 4
-    # After running the influxdb container and creating the 'hosts_metrics' DB
-    if [  "$(docker ps -q -f name=influxdb)" ]; then
-      curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TEST_TIMESTAMP"
+    # Mission 3 + Mission 7
+    PING_LATENCY="$(ping $TESTED_HOST -c1 | head -n 2 | tail -n 1 | echo "$(awk 'BEGIN {FS="[=]|ms"} {print $4}')sec")"
+    # If there is no result, output 0
+    if [[ $PING_LATENCY = "sec" ]]
+    then
+      PING_LATENCY=0
     fi
+
+    echo "Test result for $TESTED_HOST is $PING_LATENCY at $TEST_TIMESTAMP"
+
+    # Mission 4
+    curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TEST_TIMESTAMP"
 
   done <hosts
 
+  # The loop body will be executed every TEST_PERIODICITY seconds (5 seconds in our case).
   sleep "$TEST_PERIODICITY"
+
 done
