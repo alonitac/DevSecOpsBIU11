@@ -1,7 +1,7 @@
 set -e
 
 # start influxdb
-redis-server &
+redis-server --port 6378 &
 
 sleep 3
 
@@ -25,6 +25,9 @@ Running the following scenario:
 '''
 
 chmod +x ./seat.sh
+
+echo "set x x " | redis-cli -u redis://localhost:6378/0
+
 
 echo 'Execute: ./seat.sh lock "Oedipus_the_King" "Andreas" 56'
 TEXT=$(./seat.sh lock "Oedipus_the_King" "Andreas" 56)
