@@ -9,6 +9,21 @@ if [ -d "/sol" ]; then
   cd /sol
 fi
 
+echo
+echo
+echo '''
+Running the following scenario:
+
+./seat.sh lock "Oedipus_the_King" "Andreas" 56
+./seat.sh lock "Oedipus_the_King" "Marios" 56
+./seat.sh release "Oedipus_the_King" "Andreas" 56
+./seat.sh book "Oedipus_the_King" "Marios" 56
+./seat.sh lock "Oedipus_the_King" "Marios" 56
+./seat.sh book "Oedipus_the_King" "Marios" 56
+./seat.sh lock "Oedipus_the_King" "Andreas" 56
+
+'''
+
 chmod +x ./seat.sh
 
 TEXT=$(./seat.sh lock "Oedipus_the_King" "Andreas" 56)
