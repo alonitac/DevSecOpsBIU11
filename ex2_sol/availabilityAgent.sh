@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 TEST_PERIODICITY=5
 PING_TIMESTAMP=$(date +%N)
 EXIT_CODE=$?
