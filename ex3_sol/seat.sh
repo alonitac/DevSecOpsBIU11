@@ -23,6 +23,7 @@ function lock {
   local name=$2
   local seat=$3
 
+  echo "Seat was locked"
   # your implementation here ...
 
 }
