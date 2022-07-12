@@ -26,6 +26,7 @@ Running the following scenario:
 
 chmod +x ./seat.sh
 
+echo 'Execute: ./seat.sh lock "Oedipus_the_King" "Andreas" 56'
 TEXT=$(./seat.sh lock "Oedipus_the_King" "Andreas" 56)
 
 if ! echo "$TEXT" | grep -q "Seat was locked"; then
@@ -33,6 +34,7 @@ if ! echo "$TEXT" | grep -q "Seat was locked"; then
   exit 1
 fi
 
+echo 'Execute: ./seat.sh lock "Oedipus_the_King" "Marios" 56'
 TEXT=$(./seat.sh lock "Oedipus_the_King" "Marios" 56)
 
 if ! echo "$TEXT" | grep -q "This seat is currently locked by other customer, try again later"; then
@@ -40,6 +42,7 @@ if ! echo "$TEXT" | grep -q "This seat is currently locked by other customer, tr
   exit 1
 fi
 
+echo 'Execute: ./seat.sh release "Oedipus_the_King" "Andreas" 56'
 TEXT=$(./seat.sh release "Oedipus_the_King" "Andreas" 56)
 
 if ! echo "$TEXT" | grep -q "Seat was released"; then
@@ -47,6 +50,7 @@ if ! echo "$TEXT" | grep -q "Seat was released"; then
   exit 1
 fi
 
+echo 'Execute: ./seat.sh book "Oedipus_the_King" "Marios" 56'
 TEXT=$(./seat.sh book "Oedipus_the_King" "Marios" 56)
 
 if ! echo "$TEXT" | grep -q "Booking failed, lock your seat before"; then
@@ -54,6 +58,7 @@ if ! echo "$TEXT" | grep -q "Booking failed, lock your seat before"; then
   exit 1
 fi
 
+echo 'Execute: ./seat.sh lock "Oedipus_the_King" "Marios" 56'
 TEXT=$(./seat.sh lock "Oedipus_the_King" "Marios" 56)
 
 if ! echo "$TEXT" | grep -q "Seat was locked"; then
@@ -61,6 +66,7 @@ if ! echo "$TEXT" | grep -q "Seat was locked"; then
   exit 1
 fi
 
+echo 'Execute: ./seat.sh book "Oedipus_the_King" "Marios" 56'
 TEXT=$(./seat.sh book "Oedipus_the_King" "Marios" 56)
 
 if ! echo "$TEXT" | grep -q "Successfully booked this seat!"; then
@@ -68,6 +74,7 @@ if ! echo "$TEXT" | grep -q "Successfully booked this seat!"; then
   exit 1
 fi
 
+echo 'Execute: ./seat.sh lock "Oedipus_the_King" "Andreas" 56'
 TEXT=$(./seat.sh lock "Oedipus_the_King" "Andreas" 56)
 
 if ! echo "$TEXT" | grep -q "Locking failed, seat is already booked"; then
