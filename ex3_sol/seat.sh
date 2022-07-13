@@ -79,7 +79,7 @@ function book {
                     echo "Successfully booked this seat!"
                     exit 0
                 else
-                    echo "Booking failed, please lock the seat before"
+                    echo "Booking failed, lock your seat before"
                     exit 0
                 fi                    
             else
@@ -90,7 +90,6 @@ function book {
     done
 
 }
-
 
 # This function releases a lock of name ($2), seat ($3) for show ($1).
 # If this seat was not locked, or was locked by another customer, the function does nothing.
