@@ -4,7 +4,7 @@ TEST_PERIODICITY=5
 
 EXIT_CODE=$?
 
-SEND_PING="ping -c 1"
+SEND_PING="ping -c 1 -W 1"
 TEST_TIMESTAMP=$(date +%N)
 
 
