@@ -7,10 +7,9 @@ while true
 do
   for HOST_OR_IP in $(cat ./hosts); do
     PING_TIMESTAMP=$(date +%s%N)
-    EXIT_CODE=$?
 
     ping -c 1 -W 1 $HOST_OR_IP &> /dev/null
-    if [[ $EXIT_CODE -eq 0 ]]
+    if [[ $? -eq 0 ]]
     then
       RETURN_CODE=1
     else
