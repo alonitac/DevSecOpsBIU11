@@ -132,13 +132,13 @@ function release {
 function reset {
   local show=$1
 
-      if [[ $3 -gt $HALL_CAPACITY ]]; then
+    if [[ $3 -gt $HALL_CAPACITY ]]; then
     exit 5
     fi
 
     declare -i len=`redis-do "LLEN  $show:seats"`
     for x in `redis-do "LRANGE $show:seats 0 $len"` ; do
-        redis-do "DEL $show:$seat:lock" &> /dev/null
+        `redis-do "DEL $show:$seat:lock"` &> /dev/null
     done
 }
 
