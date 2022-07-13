@@ -32,11 +32,11 @@ function lock {
     fi
 
     declare -i len=`redis-do "LLEN  $show:seats"`
-    for x in `redis-do "LRANGE $show:seats 0 $len"` ; do
+    for x in $(redis-do "LRANGE $show:seats 0 $len") ; do
         if [[ $seat -eq $x ]]; then
-            if [[ `redis-do "GET $show:$seat:book"` == '' ]] ; then
-                if [[ `redis-do "GET $show:$seat:lock"` == '' ]] ; then
-                    `redis-do "SET $show:$seat:lock $name EX $LOCK_TTL"` &> /dev/null
+            if [[ $(redis-do "GET $show:$seat:book") == '' ]] ; then
+                if [[ $(redis-do "GET $show:$seat:lock") == '' ]] ; then
+                    redis-do "SET $show:$seat:lock $name EX $LOCK_TTL" &> /dev/null
                     echo "Seat was locked"
                     exit 0
                 else
@@ -49,8 +49,8 @@ function lock {
             fi
         fi
     done
-    `redis-do "LPUSH $show:seats $seat"` &> /dev/null
-    `redis-do "SET $show:$seat:lock $name"` EX $LOCK_TTL &> /dev/null
+    redis-do "LPUSH $show:seats $seat" &> /dev/null
+    redis-do "SET $show:$seat:lock $name" EX $LOCK_TTL &> /dev/null
     echo "Seat was locked"
 
 }
@@ -71,10 +71,10 @@ function book {
     fi
 
     declare -i len=`redis-do "LLEN  $show:seats"`
-    for x in `redis-do "LRANGE $show:seats 0 $len"` ; do
+    for x in $(redis-do "LRANGE $show:seats 0 $len") ; do
         if [[ $seat -eq $x ]]; then
-            if [[ `redis-do "GET $show:$seat:book"` == '' ]] ; then
-                if [[ `redis-do "GET $show:$seat:lock"` == "$name" ]] ; then
+            if [[ $(redis-do "GET $show:$seat:book") == '' ]] ; then
+                if [[ $(redis-do "GET $show:$seat:lock") == "$name" ]] ; then
                     redis-do "SET $show:$seat:book $name" &> /dev/null
                     echo "Successfully booked this seat!"
                     exit 0
@@ -108,11 +108,11 @@ function release {
     fi
 
     declare -i len=`redis-do "LLEN $show:seats"`
-    for x in `redis-do "LRANGE $show:seats 0 $len"` ; do
+    for x in $(redis-do "LRANGE $show:seats 0 $len") ; do
         if [[ $seat -eq $x ]]; then
-            if [[ `redis-do "GET $show:$seat:lock"` == '' ]] ; then
-                if [[ `redis-do "GET $show:$seat:lock"` == "$name" ]] ; then
-                    `redis-do "DEL $show:$seat:lock"` &> /dev/null
+            if [[ $(redis-do "GET $show:$seat:lock") != '' ]] ; then
+                if [[ $(redis-do "GET $show:$seat:lock") == "$name" ]] ; then
+                    redis-do "DEL $show:$seat:lock" &> /dev/null
                     echo "Seat was released"
                     exit 0
                 else
@@ -137,8 +137,8 @@ function reset {
     fi
 
     declare -i len=`redis-do "LLEN  $show:seats"`
-    for x in `redis-do "LRANGE $show:seats 0 $len"` ; do
-        `redis-do "DEL $show:$seat:lock"` &> /dev/null
+    for x in $(redis-do "LRANGE $show:seats 0 $len") ; do
+        redis-do "DEL $show:$x:lock" &> /dev/null
     done
 }
 
