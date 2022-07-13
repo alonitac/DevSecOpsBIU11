@@ -2,8 +2,6 @@
 
 TEST_PERIODICITY=5
 
-EXIT_CODE="$?"
-
 SEND_PING="ping -c 1"
 TEST_TIMESTAMP=$(date +%N)
 
@@ -12,7 +10,7 @@ do
   for TESTED_HOST in $(cat ./hosts); do
     $SEND_PING $TESTED_HOST &> /dev/null
 
-    if [[ EXIT_CODE -eq 0 ]]
+    if [[ "$?" -eq 0 ]]
     then
       RESULT=1
     else
