@@ -5,7 +5,7 @@ function ping_to_host {
     while read TESTED_HOST; do
     # Ping a host in background. If successful, RESULT will be equal to 1, else to 0
     # For ping, call once for dynamically timeout duration. To TEST_PERIODICITY sec
-    ping $TESTED_HOST -c 1 -W $TEST_PERIODICITY &> /dev/null
+    ping $TESTED_HOST -c 1 -W 1 &> /dev/null
     if [[ $? -ne 0 ]]; then
       RESULT=0
     else
