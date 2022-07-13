@@ -1,7 +1,9 @@
 #!/bin/bash
 
 TEST_PERIODICITY=5
-PING_TIMESTAMP=$(date +%s%N)
+PING_TIMESTAMP="$(date +%s%N)"
+#EXIT_CODE=$?
+
 while true
 do
   while read HOST_OR_IP
