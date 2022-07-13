@@ -31,7 +31,7 @@ function lock {
     exit 5
     fi
 
-    declare -i len=`redis-do LLEN  $show:seats`
+    declare -i len=`redis-do "LLEN  $show:seats"`
     for x in `redis-do LRANGE $show:seats 0 $len` ; do
         if [[ $seat -eq $x ]]; then
             if [[ `redis-do GET $show:$seat:book` == '' ]] ; then
