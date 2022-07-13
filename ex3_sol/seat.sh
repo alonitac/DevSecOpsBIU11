@@ -112,8 +112,8 @@ function release {
         if [[ $seat -eq $x ]]; then
             if [[ `redis-do "GET $show:$seat:lock"` == '' ]] ; then
                 if [[ `redis-do "GET $show:$seat:lock"` == "$name" ]] ; then
-                    redis-do "DEL $show:$seat:lock" &> /dev/null
-                    echo "The seat was released"
+                    `redis-do "DEL $show:$seat:lock"` &> /dev/null
+                    echo "Seat was released"
                     exit 0
                 else
                     exit 0
