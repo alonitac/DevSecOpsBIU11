@@ -18,13 +18,39 @@ function redis-do {
 # If this seat is already booked, print "Locking failed, seat is already booked"
 #
 # Note that seat number must not exceed HALL_CAPACITY, otherwise the program exits with status 5
+
+
+#  show:seat:lock
+#  show:seat:book
 function lock {
   local show=$1
   local name=$2
   local seat=$3
+    
+    if [[ $3 -gt $HALL_CAPACITY ]]; then
+    exit 5
+    fi
 
-  echo "Seat was locked"
-  # your implementation here ...
+    declare -i len=`redis-do "LLEN  $show:seats"`
+    for x in `redis-do "LRANGE $show:seats 0 $len"` ; do
+        if [[ $seat -eq $x ]]; then
+            if [[ `redis-do "GET $show:$seat:book"` == '' ]] ; then
+                if [[ `redis-do "GET $show:$seat:lock"` == '' ]] ; then
+                    `redis-do "SET $show:$seat:lock $name EX $LOCK_TTL"` &> /dev/null
+                    echo "The seat was locked"
+                    exit 0
+                else
+                    echo "This seat is currently locked by other customer, try again later"
+                    exit 0
+                fi                    
+            else
+                echo "Locking failed, seat is already booked"
+                exit 0
+            fi
+        fi
+    done
+    `redis-do "LPUSH $show:seats $seat"` &> /dev/null
+    `redis-do "SET $show:$seat:lock $name EX $LOCK_TTL"` &> /dev/null
 
 }
 
@@ -38,8 +64,29 @@ function book {
   local show=$1
   local name=$2
   local seat=$3
+   
+    if [[ $3 -gt $HALL_CAPACITY ]]; then
+    exit 5
+    fi
 
-  # your implementation here ...
+    declare -i len=`redis-do "LLEN  $show:seats"`
+    for x in `redis-do "LRANGE $show:seats 0 $len"` ; do
+        if [[ $seat -eq $x ]]; then
+            if [[ `redis-do "GET $show:$seat:book"` == '' ]] ; then
+                if [[ `redis-do "GET $show:$seat:lock"` == "$name" ]] ; then
+                    `redis-do "SET $show:$seat:book $name"` &> /dev/null
+                    echo "Successfully booked this seat!"
+                    exit 0
+                else
+                    echo "Booking failed, please lock the seat before"
+                    exit 0
+                fi                    
+            else
+                echo "Bookilng failed, seat is already booked"
+                exit 0
+            fi
+        fi
+    done
 
 }
 
@@ -54,7 +101,27 @@ function release {
   local name=$2
   local seat=$3
 
-  # your implementation here ...
+     
+    if [[ $3 -gt $HALL_CAPACITY ]]; then
+    exit 5
+    fi
+
+    declare -i len=`redis-do "LLEN  $show:seats"`
+    for x in `redis-do "LRANGE $show:seats 0 $len"` ; do
+        if [[ $seat -eq $x ]]; then
+            if [[ `redis-do "GET $show:$seat:lock"` == '' ]] ; then
+                if [[ `redis-do "GET $show:$seat:lock"` == "$name" ]] ; then
+                    `redis-do "DEL $show:$seat:lock"` &> /dev/null
+                    echo "The seat was released"
+                    exit 0
+                else
+                    exit 0
+                fi                    
+            else
+                exit 0
+            fi
+        fi
+    done
 
 }
 
@@ -64,8 +131,14 @@ function release {
 function reset {
   local show=$1
 
-  # your implementation here ...
+      if [[ $3 -gt $HALL_CAPACITY ]]; then
+    exit 5
+    fi
 
+    declare -i len=`redis-do "LLEN  $show:seats"`
+    for x in `redis-do "LRANGE $show:seats 0 $len"` ; do
+        `redis-do "DEL $show:$seat:lock"` &> /dev/null
+    done
 }
 
 
