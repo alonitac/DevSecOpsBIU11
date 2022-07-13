@@ -51,7 +51,7 @@ function lock {
     done
     `redis-do "LPUSH $show:seats $seat"` &> /dev/null
     `redis-do "SET $show:$seat:lock $name"` EX $LOCK_TTL &> /dev/null
-    echo "The seat was locked"
+    echo "Seat was locked"
 
 }
 
