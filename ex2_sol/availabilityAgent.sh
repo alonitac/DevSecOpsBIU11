@@ -1,13 +1,11 @@
 TEST_PERIODICITY=5
 
-while true
-do
-  # shellcheck disable=SC2162
+function ping_to_host {
   # Mission1
-  while read TESTED_HOST; do
-    # Mission2
+    while read TESTED_HOST; do
     # Ping a host in background. If successful, RESULT will be equal to 1, else to 0
-    ping $TESTED_HOST -c 1 -W 1 &> /dev/null
+    # For ping, call once for dynamically timeout duration. To TEST_PERIODICITY sec
+    ping $TESTED_HOST -c 1 -W $TEST_PERIODICITY &> /dev/null
     if [[ $? -ne 0 ]]; then
       RESULT=0
     else
@@ -29,8 +27,13 @@ do
 
     # Mission 4
     curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TEST_TIMESTAMP"
-
   done <hosts
+}
+
+while true
+do
+  # Mission 6 - Use the & operator to run all tests in parallel
+  ping_to_host &
 
   # The loop body will be executed every TEST_PERIODICITY seconds (5 seconds in our case).
   sleep "$TEST_PERIODICITY"
