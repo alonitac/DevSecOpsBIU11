@@ -37,7 +37,7 @@ function lock {
             if [[ `redis-do "GET $show:$seat:book"` == '' ]] ; then
                 if [[ `redis-do "GET $show:$seat:lock"` == '' ]] ; then
                     `redis-do "SET $show:$seat:lock $name EX $LOCK_TTL"` &> /dev/null
-                    echo "The seat was locked"
+                    echo "Seat was locked"
                     exit 0
                 else
                     echo "This seat is currently locked by other customer, try again later"
