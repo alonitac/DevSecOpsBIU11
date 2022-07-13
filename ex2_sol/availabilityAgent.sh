@@ -13,9 +13,9 @@ while true; do
 
       if [[ EXIT_CODE -eq 0 ]]
       then
-        RESULT=1
-      else
         RESULT=0
+      else
+        RESULT=1
       fi
 
     echo "Test result for $TESTED_HOST is $RESULT at $TEST_TIMESTAMP"
