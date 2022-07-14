@@ -9,9 +9,9 @@ function ping_to_host {
   # Mission 2 + Mission 3 + Mission 7
   # Ping a host in background. If successful, RESULT will be equal to 1, else to 0
   # For ping, call once for dynamically timeout duration. To TEST_PERIODICITY sec
-  PING_LATENCY="$(ping "$TESTED_HOST" -c 1 -w 1 | head -n 2 | tail -n 1 | echo "$(awk 'BEGIN {FS="[=]|ms"} {print $4}')"sec)"
+  PING_LATENCY="$(ping $TESTED_HOST -c 1 -w 1 | head -n 2 | tail -n 1 | echo $(awk 'BEGIN {FS="[=]|ms"} {print $4}')sec)"
   # If there is no result, output 0
-  if [[ $PING_LATENCY = "sec" ]]
+  if [[ "$PING_LATENCY" = "sec" ]]
   then
     PING_LATENCY=0
     RESULT=0
