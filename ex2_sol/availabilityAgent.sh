@@ -5,8 +5,8 @@ function ping_to_host {
   # Mission 2
   # Ping a host in background. If successful, RESULT will be equal to 1, else to 0
   # For ping, call once for dynamically timeout duration. To TEST_PERIODICITY sec
-  ping $TESTED_HOST -c 1 -W $TEST_PERIODICITY &> /dev/null
-  if [[ $? -ne 0 ]]; then
+  ping "$TESTED_HOST" -c 1 -W 1 &> /dev/null
+  if [[ "$?" -ne 0 ]]; then
     RESULT=0
   else
     RESULT=1
@@ -16,7 +16,7 @@ function ping_to_host {
   TEST_TIMESTAMP="$(date +%s%N)"
 
   # Mission 3 + Mission 7
-  PING_LATENCY="$(ping $TESTED_HOST -c 1 -w 1 | head -n 2 | tail -n 1 | echo $(awk 'BEGIN {FS="[=]|ms"} {print $4}')sec)"
+  PING_LATENCY="$(ping "$TESTED_HOST" -c 1 -w 1 | head -n 2 | tail -n 1 | echo "$(awk 'BEGIN {FS="[=]|ms"} {print $4}')"sec)"
   # If there is no result, output 0
   if [[ $PING_LATENCY = "sec" ]]
   then
@@ -34,7 +34,7 @@ do
   # Mission1
   while read TESTED_HOST; do
     # Mission 6 - Use the & operator to run all tests in parallel
-    ping_to_host $TESTED_HOST &
+    ping_to_host "$TESTED_HOST" &
   done <hosts
   # The loop body will be executed every TEST_PERIODICITY seconds (5 seconds in our case).
   sleep "$TEST_PERIODICITY"
