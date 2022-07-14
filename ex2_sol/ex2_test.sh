@@ -12,7 +12,7 @@ sleep 3
 curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE hosts_metrics"
 
 # Fixing the "ping: command not found" issue
-apt update && apt install net-tools
+apt update && apt install net-tools -y
 
 if [ -d "/sol" ]; then
   cd /sol
