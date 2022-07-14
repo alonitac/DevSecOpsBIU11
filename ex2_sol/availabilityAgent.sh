@@ -2,25 +2,21 @@ TEST_PERIODICITY=5
 
 function ping_to_host {
   TESTED_HOST=$1
-  # Mission 2
-  # Ping a host in background. If successful, RESULT will be equal to 1, else to 0
-  # For ping, call once for dynamically timeout duration. To TEST_PERIODICITY sec
-  ping "$TESTED_HOST" -c 1 -W 1 &> /dev/null
-  if [[ "$?" -ne 0 ]]; then
-    RESULT=0
-  else
-    RESULT=1
-  fi
 
   # Get the timestamp in nanoseconds and put it to a variable
   TEST_TIMESTAMP="$(date +%s%N)"
 
-  # Mission 3 + Mission 7
+  # Mission 2 + Mission 3 + Mission 7
+  # Ping a host in background. If successful, RESULT will be equal to 1, else to 0
+  # For ping, call once for dynamically timeout duration. To TEST_PERIODICITY sec
   PING_LATENCY="$(ping "$TESTED_HOST" -c 1 -w 1 | head -n 2 | tail -n 1 | echo "$(awk 'BEGIN {FS="[=]|ms"} {print $4}')"sec)"
   # If there is no result, output 0
   if [[ $PING_LATENCY = "sec" ]]
   then
     PING_LATENCY=0
+    RESULT=0
+  else
+    RESULT=1
   fi
 
   echo "Test result for $TESTED_HOST is $PING_LATENCY at $TEST_TIMESTAMP"
