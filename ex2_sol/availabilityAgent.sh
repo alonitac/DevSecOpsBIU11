@@ -18,7 +18,8 @@ function ping_to_host {
   else
     RESULT=1
   fi
-
+  echo "writing ping for test"
+  echo "$(ping $TESTED_HOST -c 1 -w 1 | head -n 2 | tail -n 1)"
   echo "Test result for $TESTED_HOST is $PING_LATENCY at $TEST_TIMESTAMP"
 
   # Mission 4
