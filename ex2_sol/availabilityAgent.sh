@@ -16,7 +16,7 @@ function ping_to_host {
   TEST_TIMESTAMP="$(date +%s%N)"
 
   # Mission 3 + Mission 7
-  PING_LATENCY="$(ping $TESTED_HOST -c1 | head -n 2 | tail -n 1 | echo "$(awk 'BEGIN {FS="[=]|ms"} {print $4}')sec")"
+  PING_LATENCY="$(ping $TESTED_HOST -c1 -w 1 | head -n 2 | tail -n 1 | echo "$(awk 'BEGIN {FS="[=]|ms"} {print $4}')sec")"
   # If there is no result, output 0
   if [[ $PING_LATENCY = "sec" ]]
   then
