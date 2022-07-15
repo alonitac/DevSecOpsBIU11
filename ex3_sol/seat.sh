@@ -58,7 +58,7 @@ if [[ $test_var == 0 ]]
 then
 redis-do "set $show:$name:$seat lock" &> /dev/null
 redis-do "EXPIRE $show:$name:$seat $LOCK_TTL" &> /dev/null
-echo "The seat was locked"
+echo "Seat was locked"
 fi
 
 
@@ -105,7 +105,7 @@ fi
 done < keys
 if [[ $test_var == 0 ]]
 then
-echo "Booking failed, please lock the seat before"
+echo "Booking failed, lock your seat before"
 fi
 }
 
@@ -139,7 +139,7 @@ get_value=$(redis-do "get $line")
 if [[ $get_value == "lock" ]]
 then
 redis-do "del $show:$name:$seat" &> /dev/null
-echo "The seat was released"
+echo "Seat was released"
 fi
 
 break
