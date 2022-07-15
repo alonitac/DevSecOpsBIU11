@@ -5,7 +5,7 @@
 set -e
 
 # start influxdb
-influxd &
+influxdb &
 
 sleep 3
 # create a db
