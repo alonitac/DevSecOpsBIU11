@@ -1,3 +1,4 @@
+
 LOCK_TTL=600
 HALL_CAPACITY=300
 
@@ -24,6 +25,42 @@ function lock {
   local seat=$3
 
   # your implementation here ...
+if [[ $seat -gt $HALL_CAPACITY ]]
+then
+exit 5
+fi
+
+redis-do "KEYS *" > keys
+while read line
+do
+line_show=$(echo $line | cut -d ":" -f 1)
+line_name=$(echo $line | cut -d ":" -f 2)
+line_seat=$(echo $line | cut -d ":" -f 3)
+if [[ $show == $line_show && $name != $line_name && $seat == $line_seat ]]
+then
+
+get_value=$(redis-do "get $line")
+if [[ $get_value == "lock" ]]
+then
+echo "This seat is currently locked by other customer, try again later"
+elif [[ $get_value == "book" ]]
+then
+echo "Locking failed, seat is already booked"
+fi
+
+test_var=1
+break
+else
+test_var=0
+fi
+done < keys
+if [[ $test_var == 0 ]]
+then
+redis-do "set $show:$name:$seat lock" &> /dev/null
+redis-do "EXPIRE $show:$name:$seat $LOCK_TTL" &> /dev/null
+echo "The seat was locked"
+fi
+
 
 }
 
@@ -39,7 +76,37 @@ function book {
   local seat=$3
 
   # your implementation here ...
+if [[ $seat -gt $HALL_CAPACITY ]]
+then
+exit 5
+fi
 
+redis-do "KEYS *" > keys
+while read line
+do
+line_show=$(echo $line | cut -d ":" -f 1)
+line_name=$(echo $line | cut -d ":" -f 2)
+line_seat=$(echo $line | cut -d ":" -f 3)
+if [[ $show == $line_show && $name == $line_name && $seat == $line_seat ]]
+then
+
+get_value=$(redis-do "get $line")
+if [[ $get_value == "lock" ]]
+then
+redis-do "set $show:$name:$seat book" &> /dev/null
+echo "Successfully booked this seat!"
+fi
+
+test_var=1
+break
+else
+test_var=0
+fi
+done < keys
+if [[ $test_var == 0 ]]
+then
+echo "Booking failed, please lock the seat before"
+fi
 }
 
 
@@ -54,7 +121,30 @@ function release {
   local seat=$3
 
   # your implementation here ...
+if [[ $seat -gt $HALL_CAPACITY ]]
+then
+exit 5
+fi
 
+redis-do "KEYS *" > keys
+while read line
+do
+line_show=$(echo $line | cut -d ":" -f 1)
+line_name=$(echo $line | cut -d ":" -f 2)
+line_seat=$(echo $line | cut -d ":" -f 3)
+if [[ $show == $line_show && $name == $line_name && $seat == $line_seat ]]
+then
+
+get_value=$(redis-do "get $line")
+if [[ $get_value == "lock" ]]
+then
+redis-do "del $show:$name:$seat" &> /dev/null
+echo "The seat was released"
+fi
+
+break
+fi
+done < keys
 }
 
 
