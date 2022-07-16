@@ -1,17 +1,18 @@
 #!\bin\bash
 
-# Solution for exercise 1
+# Solution for exercise 1 - testing
 
-echo "*Hello $USER*"
+TOKEN_FILE=.token
+TOKEN_FILE_PATH=~/$TOKEN_FILE
+REQUIRED_PERMISSION=600
 
-/usr/lib/update-notifier/apt-check --human-readable
+echo Hello $USER
 echo
 
-FILE=/home/$USER/.token
-PERMISION=$(stat -c "%a" $FILE)
+/usr/lib/update-notifier/apt-check --human-readable
 
-if [[ -f "$FILE"  && "$PERMISION" -ne 600 ]]
-then
-echo "Warning: .token file has too open permissions"
-
+if [ -f $TOKEN_FILE_PATH ]; then
+        if stat -c "%a" $TOKEN_FILE_PATH | grep -q -v $REQUIRED_PERMISSION; then
+                echo Warning: $TOKEN_FILE file has too open permissions
+        fi
 fi
