@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# solution for exersice 2
+
 TEST_PERIODICITY=5
 
 timestemp=$(date +%s%n)
