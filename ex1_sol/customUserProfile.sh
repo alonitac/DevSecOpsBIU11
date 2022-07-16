@@ -1,5 +1,7 @@
 #!\bin\bash
 
+# test this
+
 echo "*Hello $USER*"
 
 /usr/lib/update-notifier/apt-check --human-readable
