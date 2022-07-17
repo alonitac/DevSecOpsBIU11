@@ -34,7 +34,7 @@ function lock {
   then
     redis-do "set ${show}:${seat} ${name}" $> /dev/null
     redis-do "EXPIRE ${show}:${seat} ${LOCK_TTL}" $> /dev/null
-    echo "The seat was locked"
+    echo "Seat was locked"
   else
     echo "This seat is currently locked by other customer, try again later"
   fi
