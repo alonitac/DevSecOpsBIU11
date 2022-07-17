@@ -36,7 +36,7 @@ function lock {
     redis-do "EXPIRE ${show}:${seat} ${LOCK_TTL}" &> /dev/null
     echo "Seat was locked"
   else
-    echo "Locking failed, seat is already booked"
+    echo "This seat is currently locked by other customer, try again later"
   fi
 }
 
