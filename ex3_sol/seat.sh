@@ -62,7 +62,7 @@ function book {
     redis-do "set ${show}:${seat} ${name}"
     echo "Successfully booked this seat!"
   else
-    echo "Booking failed, please lock the seat before"
+    echo "Booking failed, lock your seat before"
   fi
 
 }
