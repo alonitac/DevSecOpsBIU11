@@ -88,7 +88,7 @@ function release {
   if [[ "$seatTest" = "$name" ]]
   then
       redis-do "del ${show}:${seat}" &> /dev/null
-      echo "The seat was released"
+      echo "Seat was released"
   fi
 }
 
