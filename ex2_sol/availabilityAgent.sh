@@ -12,6 +12,7 @@ do
 	  	else
 	  	RESULT=0
 	  	fi
+	  TIME=$(date +%s.%N)
   	  echo "Test result for $line is $RESULT at $TIME"
 	  curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$HOSTS_FILE value=$RESULT $TIME"
         done < hosts
