@@ -32,8 +32,8 @@ function lock {
   #echo $seatTest
   if [[ -z $seatTest ]]
   then
-    redis-do "set ${show}:${seat} ${name}" $> /dev/null
-    redis-do "EXPIRE ${show}:${seat} ${LOCK_TTL}" $> /dev/null
+    redis-do "set ${show}:${seat} ${name}" &> /dev/null
+    redis-do "EXPIRE ${show}:${seat} ${LOCK_TTL}" &> /dev/null
     echo "Seat was locked"
   else
     echo "This seat is currently locked by other customer, try again later"
@@ -87,7 +87,7 @@ function release {
   #echo $seatTest
   if [[ "$seatTest" = "$name" ]]
   then
-      redis-do "del ${show}:${seat}"
+      redis-do "del ${show}:${seat}" &> /dev/null
       echo "The seat was released"
   fi
 }
