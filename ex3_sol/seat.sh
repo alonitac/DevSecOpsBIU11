@@ -23,8 +23,21 @@ function lock {
   local name=$2
   local seat=$3
 
-  # your implementation here ...
-
+  if [[ $seat -gt $HALL_CAPACITY ]]
+  then
+      echo "Seat number can be up to 300"
+      exit 5
+  fi
+  seatTest=$(redis-do "get ${show}:${seat}")
+  #echo $seatTest
+  if [[ -z $seatTest ]]
+  then
+    redis-do "set ${show}:${seat} ${name}"
+    redis-do "EXPIRE ${show}:${seat} ${LOCK_TTL}"
+    echo "The seat was locked"
+  else
+    echo "This seat is currently locked by other customer, try again later"
+  fi
 }
 
 # This function book a name ($2, string) and seat ($3, integer) in show ($1, string).
@@ -38,7 +51,19 @@ function book {
   local name=$2
   local seat=$3
 
-  # your implementation here ...
+  if [[ $seat -gt $HALL_CAPACITY ]]
+  then
+      echo "Seat number can be up to 300"
+      exit 5
+  fi
+  seatTest=$(redis-do "get ${show}:${seat}")
+  if [[ ! -z $seatTest ]]
+  then
+    redis-do "set ${show}:${seat} ${name}"
+    echo "Successfully booked this seat!"
+  else
+    echo "Booking failed, please lock the seat before"
+  fi
 
 }
 
@@ -53,8 +78,18 @@ function release {
   local name=$2
   local seat=$3
 
-  # your implementation here ...
-
+  if [[ $seat -gt $HALL_CAPACITY ]]
+  then
+      echo "Seat number can be up to 300"
+      exit 5
+  fi
+  seatTest=$(redis-do "get ${show}:${seat}")
+  #echo $seatTest
+  if [[ "$seatTest" = "$name" ]]
+  then
+      redis-do "del ${show}:${seat}"
+      echo "The seat was released"
+  fi
 }
 
 
