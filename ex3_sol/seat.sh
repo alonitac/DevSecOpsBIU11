@@ -10,7 +10,7 @@ function redis-do {
   echo "$1" | redis-cli -u redis://localhost:6378/0
 }
 
-# This function lock a name ($2, string) and seat ($3, integer) in show ($1, string).
+# This function lock a name ($2 , string) and seat ($3, integer) in show ($1, string).
 # Locking is possible only if this seat was not locked by other customer name.
 # The lock should be expired automatically after $LOCK_TTL seconds.
 # Upon success, print "The seat was locked"
@@ -22,10 +22,27 @@ function lock {
   local show=$1
   local name=$2
   local seat=$3
+  GET_SHOW=$(redis-cli -u redis://localhost:6378/0 get $show:$seat)
 
-  # your implementation here ...
+  ### If seat lock time expired ###
+
+  if [ $LOCK_TTL -eq 0 && $seat <= $HALL_CAPACITY ]; then
+	  (redis-cli -u redis://localhost:6378/0 set $show:$seat $name)
+  fi
+
+  ### If seat is not taken ###
+
+  if  [ $GET_SHOW == "(nil)" && $seat -lt $HALL_CAPACITY || $GET_SHOW -eq "" &&  $seat <= $HALL_CAPACITY ]; then
+	  (redis-cli -u redis://localhost:6378/0 set $show:$seat $name)
+	  echo "The seat was locked"
+  else
+	  echo "This seat is currently locked by other customer, try again later"
+ fi
+
 
 }
+
+
 
 # This function book a name ($2, string) and seat ($3, integer) in show ($1, string).
 # Booking is possible only if $2 was locked the seat before for this show.
@@ -37,10 +54,15 @@ function book {
   local show=$1
   local name=$2
   local seat=$3
-
-  # your implementation here ...
+  GET_SHOW=$(redis-cli -u redis://localhost:6378/0 get $show:$seat)
+  if  [[ $GET_SHOW == $name ]]; then
+          echo "Successfully booked this seat!"
+  else
+          echo "Booking failed, please lock the seat before"
+  fi
 
 }
+
 
 
 # This function releases a lock of name ($2), seat ($3) for show ($1).
@@ -53,9 +75,17 @@ function release {
   local name=$2
   local seat=$3
 
-  # your implementation here ...
+GET_SHOW=$(redis-cli -u redis://localhost:6378/0 get $show:$seat)
+  if  [[ $GET_SHOW != "(nil)" ]]; then
+          redis-cli -u redis://localhost:6378/0 del $show:$seat
+
+  fi
 
 }
+
+lock $1 $2 $3
+#book $1 $2 $3
+
 
 
 # OPTIONAL
