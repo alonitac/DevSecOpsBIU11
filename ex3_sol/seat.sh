@@ -30,9 +30,10 @@ function lock {
   # The seat number must not exceed HALL_CAPACITY, otherwise the program exits with status 5
   seat_validation_check "$seat"
 
-  # Get values from the "book" set-key and the "$show:$seat" key
-  book_status="$(redis-do "smembers $show:$seat:book")"
-  lock_status="$(redis-do "get $show:$seat")"
+  # Get ticket statuses
+  ticket="$show:$seat"
+  book_status="$(redis-do "smembers $ticket:book")"
+  lock_status="$(redis-do "get $ticket")"
 
   # If this seat is already booked, print "Locking failed, seat is already booked"
   if [[ ! -z "$book_status" ]] # If not empty, the seat has been booked
@@ -47,9 +48,9 @@ function lock {
   # Locking is possible only if this seat was not locked by other customer name.
   else
     # The lock should be expired automatically after $LOCK_TTL seconds.
-    redis-do "set $show:$seat $name ex $LOCK_TTL" &> /dev/null
-    # Add the key as value in the "$show:lock" set-key (For the reset function)
-    redis-do "sadd $show:lock $show:$seat" &> /dev/null
+    redis-do "set $ticket $name ex $LOCK_TTL" &> /dev/null
+    # Add the ticket to the "lock" set (For the reset function)
+    redis-do "sadd $show:lock $ticket" &> /dev/null
     # Upon success, print "The seat was locked"
     echo "The seat was locked"
   fi
@@ -65,9 +66,10 @@ function book {
   # The seat number must not exceed HALL_CAPACITY, otherwise the program exits with status 5
   seat_validation_check "$seat"
 
-  # Get values from the "book" set-key and the "$show:$seat" key
-  book_status="$(redis-do "smembers $show:$seat:book")"
-  lock_status="$(redis-do "get $show:$seat")"
+  # Get ticket statuses
+  ticket="$show:$seat"
+  book_status="$(redis-do "smembers $ticket:book")"
+  lock_status="$(redis-do "get $ticket")"
 
 # If this seat is already booked, print "Locking failed, seat is already booked"
   if [[ ! -z "$book_status" ]] # If not empty, the seat has been booked
@@ -81,10 +83,10 @@ function book {
 
   # Booking is possible only if $2 was locked the seat before for this show.
   else
-    # Add the the name of the user to the "book" set-key
-    redis-do "sadd $show:$seat:book $name" &> /dev/null
-    # Remove the show and seat from the "$show:lock" set-key (For the reset function)
-    redis-do "srem $show:lock $show:$seat" &> /dev/null
+    # Add the the name of the user to the "book" set
+    redis-do "sadd $ticket:book $name" &> /dev/null
+    # Remove the ticket from the "lock" set (For the reset function)
+    redis-do "srem $show:lock $ticket" &> /dev/null
     # Upon success, print "Successfully booked this seat!"
     echo "Successfully booked this seat!"
   fi
@@ -101,16 +103,17 @@ function release {
   # The seat number must not exceed HALL_CAPACITY, otherwise the program exits with status 5
   seat_validation_check "$seat"
 
-  # Get the "$show:$seat" value for status
-  lock_status="$(redis-do "get $show:$seat")"
+  # Get the ticket status
+  ticket="$show:$seat"
+  lock_status="$(redis-do "get $ticket")"
 
   # If this seat was not locked, or was locked by another customer, the function does nothing.
   if [[ $lock_status = "$name" ]]
   then
     # Remove the "lock" status
-    redis-do "del $show:$seat" &> /dev/null
-    # Remove the show and seat from the "$show:lock" set-key (For the reset function)
-    redis-do "srem $show:lock $show:$seat" &> /dev/null
+    redis-do "del $ticket" &> /dev/null
+    # Remove the ticket from the "lock" set (For the reset function)
+    redis-do "srem $show:lock $ticket" &> /dev/null
     # If the seat has been released, print "The seat was released"
     echo "The seat was released"
   fi
@@ -121,16 +124,16 @@ function release {
 function reset {
   local show=$1
 
-  # Get the keys which have been pointed to the lock seats
+  # Get the values of the "lock" set (The tickets info)
   get_lock_keys="$(redis-do "smembers $show:lock")"
 
-  # Release all of those key values
+  # Release those tickets
   for key in "$get_lock_keys"
   do
     redis-do "del $key" &> /dev/null
   done
 
-  # Reset the "$show:lock" set-keys
+  # Reset the "lock" set (Empty the tickets info of the "lock" set)
   redis-do "unlink $show:lock" &> /dev/null
 }
 
