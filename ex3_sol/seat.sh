@@ -31,9 +31,9 @@ function lock {
   seat_validation_check "$seat"
 
   # Get ticket statuses
-  ticket="$show:$seat"
-  book_status="$(redis-do "smembers $ticket:book")"
-  lock_status="$(redis-do "get $ticket")"
+  local ticket="$show:$seat"
+  local book_status="$(redis-do "smembers $ticket:book")"
+  local lock_status="$(redis-do "get $ticket")"
 
   # If this seat is already booked, print "Locking failed, seat is already booked"
   if [[ ! -z "$book_status" ]] # If not empty, the seat has been booked
@@ -67,9 +67,9 @@ function book {
   seat_validation_check "$seat"
 
   # Get ticket statuses
-  ticket="$show:$seat"
-  book_status="$(redis-do "smembers $ticket:book")"
-  lock_status="$(redis-do "get $ticket")"
+  local ticket="$show:$seat"
+  local book_status="$(redis-do "smembers $ticket:book")"
+  local lock_status="$(redis-do "get $ticket")"
 
 # If this seat is already booked, print "Locking failed, seat is already booked"
   if [[ ! -z "$book_status" ]] # If not empty, the seat has been booked
@@ -104,8 +104,8 @@ function release {
   seat_validation_check "$seat"
 
   # Get the ticket status
-  ticket="$show:$seat"
-  lock_status="$(redis-do "get $ticket")"
+  local ticket="$show:$seat"
+  local lock_status="$(redis-do "get $ticket")"
 
   # If this seat was not locked, or was locked by another customer, the function does nothing.
   if [[ $lock_status = "$name" ]]
