@@ -33,14 +33,14 @@ function lock {
   local seat=$3
 
   # your implementation here ...
- checkSeatNotExceed "$3"
+ checkSeatNotExceed "$seat"
 
   if redis-do "exists book-$show-$seat" | grep -q "1"; then
         echo "Locking failed, seat is already booked"
 
   elif redis-do "setnx lock-$show-$seat $name" | grep -q "1"; then
 	redis-do "EXPIRE lock-$show-$seat $LOCK_TTL" >> /dev/null
-	echo "Seat was locked"
+	echo "The seat was locked"
 #if setnx failed then the lock is taken - check if it is taken ny someone else:
   elif [[ $(redis-do "get lock-$show-$seat") != "$name" ]]; then
         echo "This seat is currently locked by other customer, try again later"
