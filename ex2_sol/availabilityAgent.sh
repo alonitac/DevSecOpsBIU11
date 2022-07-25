@@ -2,8 +2,7 @@ TEST_PERIODICITY=5
 
 
 function test {
-  ping -W 2 -c 1 $1
-  PING_RESULT=$(ping -W 2 -c 1 $1)
+  PING_RESULT=$(ping -W 2 -c 1 $1 &> /dev/null || echo "0")
   if [ -z "$PING_RESULT" ]; then
     PING_RESULT=1
   fi
