@@ -18,7 +18,7 @@ do
     # your implementation here
 
     while read p; do
-      test $p
+      test $p &
     done < hosts
 
     echo
