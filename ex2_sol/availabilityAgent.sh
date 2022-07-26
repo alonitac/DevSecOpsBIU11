@@ -1,5 +1,3 @@
-#!/bin/bash
-
 TEST_PERIODICITY=5
 
 function ping_to_host {
