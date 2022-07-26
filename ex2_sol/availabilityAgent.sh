@@ -8,7 +8,7 @@ do
 
   while read host
   do
-    ping -c 1 -W 1 $host &> /dev/null
+    ping -c 1 -W 1 $host in $hosts &> /dev/null
     if [[ $? -eq 0]]
       then
       RESULT=1
@@ -19,7 +19,6 @@ do
     curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$host value=$RESULT $(date +%s%N)"
 
   done < hosts
-
 
   sleep $TEST_PERIODICITY
 done
