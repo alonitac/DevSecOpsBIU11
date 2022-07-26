@@ -1,6 +1,8 @@
 LOCK_TTL=600
 HALL_CAPACITY=300
 
+# testing
+
 function checkSeatNotExceed {
   local seat=$1
 
