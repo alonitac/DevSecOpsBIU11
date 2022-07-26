@@ -1,28 +1,28 @@
 #!/bin/bash
 
-# solution for exersice 2
+#Testing solution
 
 TEST_PERIODICITY=5
 
-timestemp=$(date +%s%n)
+
 while true
 do
-for host in $hosts
-do
-  ping -c 1 -W 1 $host &> /dev/null
-  if [[ $? -eq 0]]
-    do RESULT=1
-  else
-    RESULT=0
-  fi
+  for HOST_OR_IP in $(cat ./hosts); do
+    PING_TIMESTAMP=$(date +%s%N)
 
+    ping -c 1 -W 1 $HOST_OR_IP &> /dev/null
+    if [[ $? -eq 0 ]]
+    then
+      RETURN_CODE=1
+    else
+      RETURN_CODE=0
+    fi
+
+    echo "The result for $HOST_OR_IP is $RETURN_CODE at $PING_TIMESTAMP"
+    curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$HOST_OR_IP value=$RETURN_CODE $PING_TIMESTAMP"
   done
 
-echo Test result for "" is "$R" at $timestemp
-    curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$TESTED_HOST value=$RESULT $TEST_TIMESTAMP"
-done < hosts
-
-
-    sleep $TEST_PERIODICITY
-
+  sleep $TEST_PERIODICITY
 done
+
+
