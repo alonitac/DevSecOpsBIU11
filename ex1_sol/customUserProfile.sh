@@ -8,7 +8,7 @@ FILE=/home/$USER/.token #task 3
 touch $FILE
 STAT=$(stat -c %a $FILE)
 
-
+# FIXME you should also have to test if the file exists
 if [ "$STAT" == "600" ]; then
     echo "You all set"
 else
