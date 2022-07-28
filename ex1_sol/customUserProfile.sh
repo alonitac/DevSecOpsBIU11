@@ -1,6 +1,9 @@
 # Hello User
 echo "Hello $USER"
 
+# FIXME (no fix needed) - great!
+
+
 # Package updates Status
 /usr/lib/update-notifier/apt-check --human-readable
 
