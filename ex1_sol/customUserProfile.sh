@@ -1,5 +1,7 @@
 echo Hello $USER
 
+#FIXME (no fix needed) - Great!
+
 /usr/lib/update-notifier/apt-check --human-readable
 
 if [ -f ~/.token ]; then
