@@ -13,6 +13,7 @@ else
         exit
 fi
 
+# FIXME the stat command expecting some filename as an argument
 if [ "stat -c "%a" -ne "600"" ];then
         echo "Warning: .token file has too open permissions"
 else
