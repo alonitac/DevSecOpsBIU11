@@ -1,5 +1,8 @@
 #Created by anan - DevSecOpsBIU11
 #!/bin/bash
+
+# FIXME (no fix needed) - good code, you've implemented more functionality than required
+
 #get current local time
 h=`date +%H`
 
