@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# FIXME (no fix needed) Great!
+
 # Prints current user's name
 echo "Hello" $USER
 
