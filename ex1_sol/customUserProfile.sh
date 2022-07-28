@@ -1,5 +1,7 @@
 # ....code written here before...
 
+# FIXME (no fix needed) - great! the '#!/bin/bash' sha-bang must be the first line in the script
+
 # your changes:
 #!/bin/bash
 
