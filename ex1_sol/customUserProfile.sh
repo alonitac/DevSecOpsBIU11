@@ -1,3 +1,6 @@
+# FIXME (no fix needed) - Great!
+
+
 echo -e "Hello $(whoami)\n" # Mission 1
 
 /usr/lib/update-notifier/apt-check --human-readable # Mission2
