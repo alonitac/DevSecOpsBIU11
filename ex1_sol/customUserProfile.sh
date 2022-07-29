@@ -2,6 +2,9 @@
 #print welcome msg
 echo Hello Dear $USER
 
+# FIXME (no fix needed) - Great!
+
+
 #check packages outdated
 /usr/lib/update-notifier/apt-check --human-readable
 
