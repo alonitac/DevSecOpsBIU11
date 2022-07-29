@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# FIXME (no fix needed) - Great!
+
 echo Hello $USER
 /usr/lib/update-notifier/apt-check --human-readable
 
