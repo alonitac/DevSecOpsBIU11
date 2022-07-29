@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# FIXME (no fix needed) - The code is correct, but you should fix the warning message in order to pass the tests
+
 TOKEN_F=.token
 TOKEN_PATH=~/$TOKEN_F
 PREM_CHECK=600
