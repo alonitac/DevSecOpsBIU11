@@ -3,6 +3,8 @@ in .bashrc add:
 echo "hello $USER"
 /usr/lib/update-notifier/apt-check --human-readable
 
+# FIXME - the filename is .token,  not token (note the dot prefix)
+
 touch /home/$USER/token
 
 FILE=/home/$USER/token
