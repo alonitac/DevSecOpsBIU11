@@ -1,3 +1,4 @@
+# FIXME (no fix needed) - the solution has some redundant code lines, the if statement is incorrect
 
 echo "Welcome ${USER}"
 apt install npm
