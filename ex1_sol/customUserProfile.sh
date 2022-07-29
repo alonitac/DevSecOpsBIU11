@@ -2,6 +2,9 @@
 echo Hello $USER
 echo
 
+# FIXME (no fix needed) - Great!
+
+
 # Print how many packages are outdated
 /usr/lib/update-notifier/apt-check --human-readable
 echo
