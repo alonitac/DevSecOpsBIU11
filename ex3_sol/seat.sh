@@ -13,7 +13,8 @@ function redis-do {
 # This function checks if the seat number exceeds HALL_CAPACITY, otherwise the program exists with status 5
 function seat_check {
   local seat=$1
-  if [ $seat -gt $HALL_CAPACITY ]; then
+  if [ $seat -gt $HALL_CAPACITY ]
+    then
     exit 5
   fi
 }
@@ -38,7 +39,7 @@ function lock {
   if [ -z $seatTest ]; then                                   # attempting to lock the seat
     redis-do "set ${show}:${seat} ${name}" &>/dev/null        # locking a seat
     redis-do "EXPIRE ${show}:${seat} ${LOCK_TTL}" &>/dev/null # set expire time for a seat
-    echo "The seat was locked"
+    echo "Seat was locked"
   else
     echo "Locking failed, seat is already booked"
   fi
