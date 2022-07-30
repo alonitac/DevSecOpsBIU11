@@ -1,26 +1,29 @@
-#!/bin/bash
-
 TEST_PERIODICITY=5
-
 
 while true
 do
-  for HOST_OR_IP in $(cat ./hosts); do
-    PING_TIMESTAMP=$(date +%s%N)
+   #!/bin/bash
 
-    ping -c 1 -W 1 $HOST_OR_IP &> /dev/null
-    if [[ $? -eq 0 ]]
-    then
-      RETURN_CODE=1
-    else
-      RETURN_CODE=0
-    fi
+TEST_PERIODICITY=5
 
-    echo "The result for $HOST_OR_IP is $RETURN_CODE at $PING_TIMESTAMP"
-    curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$HOST_OR_IP value=$RETURN_CODE $PING_TIMESTAMP"
-  done
-
-  sleep $TEST_PERIODICITY
+while true
+do
+      while read host
+        do
+                ping -c 1 -W 1 "${host}" &> /dev/null
+                if      [[ $? == 0 ]] ; then
+                        RESULT=1
+                else
+                        RESULT=0
+                fi
+                echo "Test result for "${host}" is $RESULT at $(date +%s%N)"
+                curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$host value=$RESULT $TEST_TIMESTAMP"
+        done < hosts
+        echo
+    sleep $TEST_PERIODICITY
 done
 
+
+    sleep $TEST_PERIODICITY
+done
 
