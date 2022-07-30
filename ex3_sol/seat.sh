@@ -38,7 +38,7 @@ function lock {
   if [ -z $seatTest ]; then                                   # attempting to lock the seat
     redis-do "set ${show}:${seat} ${name}" &>/dev/null        # locking a seat
     redis-do "EXPIRE ${show}:${seat} ${LOCK_TTL}" &>/dev/null # set expire time for a seat
-    echo "Seat was locked"
+    echo "The seat was locked"
   else
     echo "Locking failed, seat is already booked"
   fi
