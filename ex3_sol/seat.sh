@@ -10,6 +10,14 @@ function redis-do {
   echo "$1" | redis-cli -u redis://localhost:6378/0
 }
 
+# This function checks if the seat number exceeds HALL_CAPACITY, otherwise the program exists with status 5
+function seat_check {
+  local seat=$1
+  if [ $seat -gt $HALL_CAPACITY ]; then
+    exit 5
+  fi
+}
+
 # This function lock a name ($2, string) and seat ($3, integer) in show ($1, string).
 # Locking is possible only if this seat was not locked by other customer name.
 # The lock should be expired automatically after $LOCK_TTL seconds.
@@ -23,8 +31,17 @@ function lock {
   local name=$2
   local seat=$3
 
-  # your implementation here ...
+  seat_check "$seat" # This function checks if the seat number exceeds HALL_CAPACITY, otherwise the program exists with status 5
 
+  seatTest=$(redis-do "get ${show}:${seat}") # attempt to get specific seat
+
+  if [ -z $seatTest ]; then                                   # attempting to lock the seat
+    redis-do "set ${show}:${seat} ${name}" &>/dev/null        # locking a seat
+    redis-do "EXPIRE ${show}:${seat} ${LOCK_TTL}" &>/dev/null # set expire time for a seat
+    echo "Seat was locked"
+  else
+    echo "Locking failed, seat is already booked"
+  fi
 }
 
 # This function book a name ($2, string) and seat ($3, integer) in show ($1, string).
@@ -38,10 +55,17 @@ function book {
   local name=$2
   local seat=$3
 
-  # your implementation here ...
+  seat_check "$seat" # This function checks if the seat number exceeds HALL_CAPACITY, otherwise the program exists with status 5
+
+  GET_SHOW=$(redis-cli -u redis://localhost:6378/0 get $show:$seat) # attempt to book a seat
+
+  if [ $GET_SHOW == $name ]; then
+    echo "Successfully booked this seat!"
+  else
+    echo "Booking failed, please lock the seat before"
+  fi
 
 }
-
 
 # This function releases a lock of name ($2), seat ($3) for show ($1).
 # If this seat was not locked, or was locked by another customer, the function does nothing.
@@ -53,10 +77,18 @@ function release {
   local name=$2
   local seat=$3
 
-  # your implementation here ...
+  seat_check "$seat" # This function checks if the seat number exceeds HALL_CAPACITY, otherwise the program exists with status 5
+
+  local ticket="$show:$seat" # Getting tickets status
+  local lock_status="$(redis-do "get $ticket")"
+
+  if [ $lock_status = "$name" ]; then              # Does nothing if the seat was locked by another customer or if this seat was not locked
+    redis-do "del $ticket" &>/dev/null             # Removing lock status
+    redis-do "srem $show:lock $ticket" &>/dev/null # Removing the ticket from lock set
+    echo "The seat was released"
+  fi
 
 }
-
 
 # OPTIONAL
 # This function releases all existed locks for show ($1).
@@ -66,7 +98,6 @@ function reset {
   # your implementation here ...
 
 }
-
 
 if [[ "$1" = "book" ]]; then
   book "${@:2}"
