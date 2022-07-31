@@ -14,7 +14,7 @@ do
                 if      [[ $? == 0 ]] ; then
                         RESULT=1
                 else
-                        RESUT=0
+                        RESUlT=0
                 fi
                 echo "Test result for "${host}" is $RESULT at $(date +%s%N)"
                 curl -X POST 'http://localhost:8086/write?db=hosts_metrics' --data-binary "availability_test,host=$host value=$RESULT $TEST_TIMESTAMP"
