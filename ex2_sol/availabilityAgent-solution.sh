@@ -16,3 +16,7 @@ do
 
   sleep "$TEST_PERIODICITY"
 done
+
+function woo {
+  x=20
+}
