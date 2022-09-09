@@ -23,3 +23,7 @@ done
 fucntion foo {
   x=9
 }
+
+function woo {
+  x=20
+}
