@@ -1,70 +1,125 @@
 # Git Basics (commit, diff, branches)
 
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
-10.
-11.
-12.
-13.
-14.
-15.
-16.
+1.echo "1" >> abc.txt
+2.git status - red
+3.red
+4.git add abc.txt - green, in pycharm-green
+5.echo "What is the color of file abc.txt in Git status view?" >> abc.txt
+6.it is red and in pycharm blue. The difference is because the file is already committed. and also:
+On branch main
+Changes not staged for commit
+7.git diff main
+8.because we did the file was not added to index.
+9.fatal: ambiguous argument 'stage2': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+10. git add abc.txt
+11.diff --git a/main.py b/main.py
+index e69de29..5596b44 100644
+--- a/main.py
++++ b/main.py
+@@ -0,0 +1,16 @@
++# This is a sample Python script.
+because it adds the file to the index and shows there is a difference between the file in staging and main
+12.git diff --staged
+13.echo "What is the file's color if you open the repo as a Pycharm project?" >> abc.txt
+14. Yes. Because both of the commands shows the difference between the file in staged to main.
+15.because we did 2 changes which were not committed yet.
+16.git reset
 
 # Resolve conflicts
 
-1.
-2.
-3.
-4.
+1.git branch -a
+2.git checkout -b feature/lambda_migration
+3.git merge feature/version1 feature/lambda_migration
+Merge made by the 'recursive' strategy.
+ .env        | 0
+ app.py      | 4 ++--
+ config.json | 0
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+ create mode 100644 .env
+ create mode 100644 config.json
+
+4.Done like the picture - Conflict issues
 5.
-   1.
-   2.
-   3.
-   4.
-   5.
-6.
+   1.Did merge
+   2.Pressed all
+   3.Done annotation on both versions
+   4.Did accept left
+   5.The window closed but couldn't do accept to the function name of Nadella's version so changed manually.
+6.No added commits
 
 # Cherry picking
 
-1.
-2.
-3.
-    1.
-    2.
-4.
-5.
+1.git checkout main && git checkout -b feature/lambda_migration2
+2.Done
+3.Done
+    1.Done
+    2.Done
+4. files: .env and config.json
+5.Yes because each change is dependent on the previous change.
 
 
 # Changes in working tree and switch branches
 
-1.
-2.
-3.
-4.
-5.
-6.
+1.Done
+2.touch take.txt and added some lines
+3.git add take.txt
+4.error: Your local changes to the following files would be overwritten by checkout:
+        take.txt
+Please commit your changes or stash them before you switch branches.
+Aborting
+
+5.no. It contains it own version
+6.Done. take.txt is gone. Force checkout will accept the destination force checkout version and delete the version from
+which you've done the checkout.
 
 # Reset
 
-1.
+1.git checkout reset_question
 2.
-   1.
-   2.
-   3.
-   4.
-3.
+   1.Done. git status shows:
+   Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   10.txt
+undo the staging commands
+   2.$ git status
+On branch reset_question
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        10.txt
+        9.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+reverted back to the last working tree
+
+   3.On branch reset_question
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        10.txt
+        9.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+Reset all commits and delete them.
+
+   4.[main 2022-09-20T13:26:51.046Z] update#setState idle
+[main 2022-09-20T13:26:53.249Z] Starting extension host with pid 33592 (fork() took 61 ms).
+(node:34692) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+(Use `Code --trace-deprecation ...` to show where the warning was created)
+[main 2022-09-20T13:27:21.051Z] update#setState checking for updates
+[main 2022-09-20T13:27:21.057Z] update#setState downloading
+
+Closed the windows and opened VS code.
+
+Didn't understand what was done
+3.Don't understand what was done.
 
 
 # Working with GitHub
 
-1.
-2.
-3.
-4.
+1.Done
+2.Done
+3.Done
+4.https://github.com/eran8888/git-excercise_16-09.git
