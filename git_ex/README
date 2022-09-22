@@ -1,25 +1,33 @@
 # Git Basics (commit, diff, branches)
 
-1.
-2.
-3.
-4.
+1.Red
+2.Green
+3.Green
+4.Green
 5.
-6.
-7.
-8.
-9.
+6.Status color has changed from Green to Red
+7.git dif main # Or git diff HEAD
+8.git diff --staged print nothing because we've it's empty. after commiting the changes
+9. There isn't a revision (Commit reference) that named 'stage2'. "fatal: ambiguous argument 'stage2': unknown revision or path not in the working tree."
 10.
-11.
-12.
+11.Nothing. Because there's no changes on the working tree after adding the changes to the index area
+12.git diff --staged
 13.
-14.
-15.
+14.No. Because the there is a new change on the working tree. So the differences between the working tree and index are not the same with main branch
+15.Because there is one change that I've added to the index area and the second change I've left on the working tree area
 16.
 
 # Resolve conflicts
 
-1.
+1.$ git branch
+  bugfix/fix_readme_typo
+  bugfix/open_kibana_port
+  dev
+  feature/data_retention_policy
+  feature/elasticsearch_helm_chart
+  feature/upgrade_angular_version
+  feature/version1
+  feature/version2
 2.
 3.
 4.
@@ -30,6 +38,8 @@
    4.
    5.
 6.
+"Merge branch 'feature/version1' into feature/lambda_migration"
+"Merge branch 'feature/version2' into feature/lambda_migration"
 
 # Cherry picking
 
@@ -38,28 +48,56 @@
 3.
     1.
     2.
-4.
-5.
+4..env file and config.json file
+5."You should definitely cherry-pick commits in order. If you don't, they may not apply - imagine that one commit adds foo.c, and the next one modifies it. Clearly they're not going to work out of order."
+    https://stackoverflow.com/questions/10057634/cherrypick-commit-orders
 
 
 # Changes in working tree and switch branches
 
 1.
 2.
-3.
+3."error: Your local changes to the following files would be overwritten by checkout:
+        take.txt
+Please commit your changes or stash them before you switch branches.
+Aborting"
+
 4.
 5.
-6.
+6.Force Checkout has overwritten the changes and removed the 'take.txt' file
 
 # Reset
 
 1.
-2.
-   1.
-   2.
-   3.
+2. Source: https://tousu.in/qa/?qa=688846/undo-what-is-difference-between-git-reset-hard-head-1-and-git-reset-soft-head-1
+   1. The last change "new file:   10.txt" is on the index area. That's
+   When using git reset --soft HEAD~1 you will remove the last commit from the current branch, but the file changes will stay in your working tree.
+
+   2. The files "9.txt" and "10.txt" are on the working tree area
+   This is the default mode and quite similar to soft. When "removing" a commit with git reset HEAD~1 you will still keep the changes in your working tree but not on the index
+
+   3. The file "8.txt" has been removed. The files "9.txt" and "10.txt" are still on the working tree area
+   When using git reset --hard HEAD~1 you will lose all uncommited changes and all untracked files in addition to the changes introduced in the last commit. The changes won't stay in your working tree so doing a git status command will tell you that you don't have any changes in your repository.
+
    4.
-3.
+Revert "6"
+
+This reverts commit 34eb8c2d0ba6f28e743e5100bb678af516039196.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch reset_question
+# Changes to be committed:
+#       deleted:    6.txt
+#
+# Untracked files:
+Instead of removing the commit from the project history, it figures out how to invert the changes introduced by the commit and appends a new commit with the resulting inverse content. This prevents Git from losing history, which is important for the integrity of your revision history and for reliable collaboration.
+https://www.atlassian.com/git/tutorials/undoing-changes/git-revert
+
+3.HEAD~1 is a special commit identifier in git; it stands for the previous commit.
+https://teamtreehouse.com/community/how-does-head1-work-in-git
+
 
 
 # Working with GitHub
@@ -67,4 +105,4 @@
 1.
 2.
 3.
-4.
+4. https://github.com/MaorW/git_ex04
