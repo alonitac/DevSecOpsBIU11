@@ -5,10 +5,11 @@ TEST_PERIODICITY=5
 
 while true
 do
-  for HOST_OR_IP in $(cat ./hosts); do
+  for HOST_OR_IP in $(cat ./hosts)
+  do
     PING_TIMESTAMP=$(date +%s%N)
 
-    ping -c 1 -W 1 $HOST_OR_IP &> /dev/null
+    ping -c 1 -W 1 "$HOST_OR_IP" &> /dev/null
     if [[ $? -eq 0 ]]
     then
       RETURN_CODE=1

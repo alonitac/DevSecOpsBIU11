@@ -31,7 +31,7 @@ if ! grep -q "Hello myuser" "$OUTPUT_FILE"; then
   exit 1
 fi
 
-if ! grep -q "updates can be applied immediately" "$OUTPUT_FILE"; then
+if ! grep -q "updates can be applied immediately" "$OUTPUT_FILE   "; then
   >&2 printf "Expected to get an outdated packages message"
   exit 1
 fi
