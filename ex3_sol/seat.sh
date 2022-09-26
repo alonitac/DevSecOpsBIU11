@@ -36,12 +36,12 @@ function lock {
   local lock_status="$(redis-do "get $ticket")"
 
   # If this seat is already booked, print "Locking failed, seat is already booked"
-  if [[ -n "$book_status" ]] # If not empty, the seat has been booked
+  if [[ ! -z "$book_status" ]] # If not empty, the seat has been booked
   then
     echo "Locking failed, seat is already booked"
 
   # If this seat was locked by another customer, print "This seat is currently locked by other customer, try again later"
-  elif [[ "$lock_status" != "$name" && -n "$lock_status" ]]
+  elif [[ "$lock_status" != "$name" && ! -z "$lock_status" ]]
   then
     echo "This seat is currently locked by other customer, try again later"
 
@@ -72,7 +72,7 @@ function book {
   local lock_status="$(redis-do "get $ticket")"
 
 # If this seat is already booked, print "Locking failed, seat is already booked"
-  if [[ -n "$book_status" ]] # If not empty, the seat has been booked
+  if [[ ! -z "$book_status" ]] # If not empty, the seat has been booked
   then
     echo "Locking failed, seat is already booked"
 
@@ -128,7 +128,7 @@ function reset {
   get_lock_keys="$(redis-do "smembers $show:lock")"
 
   # Release those tickets
-  for key in $get_lock_keys
+  for key in "$get_lock_keys"
   do
     redis-do "del $key" &> /dev/null
   done
