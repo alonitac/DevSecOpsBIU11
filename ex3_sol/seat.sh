@@ -138,6 +138,7 @@ function reset {
 }
 
 
+
 if [[ "$1" = "book" ]]; then
   book "${@:2}"
 elif [[ "$1" = "lock" ]]; then
