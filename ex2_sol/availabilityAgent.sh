@@ -2,6 +2,8 @@
 
 TEST_PERIODICITY=5
 
+# TODO great solution! clean and concise code
+
 while true; do
   while read ADDRESS; do                # reading all lines in hosts file and pinging them
     ping -c 1 -W 1 $ADDRESS &>/dev/null # pinging silently with single ping and 1 second timeout
