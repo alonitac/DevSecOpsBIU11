@@ -2,6 +2,7 @@
  # Testing!
 TEST_PERIODICITY=5
 
+# TODO good solution Michael, clean and organized code
 
 while true
 do
