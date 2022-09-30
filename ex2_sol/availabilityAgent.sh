@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO try to keep the correct indentation so the code would be more readable.
+# TODO other than that, good solution!
  TEST_PERIODICITY=5
 
  while true
