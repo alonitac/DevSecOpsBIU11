@@ -23,6 +23,7 @@ function lock {
   local name=$2
   local seat=$3
 
+  # TODO you can take the below snippet to a separate function so you don't need to duplicate the code in every function
   if [[ $seat -gt $HALL_CAPACITY ]]
   then
       echo "Seat number can be up to 300"
@@ -32,6 +33,7 @@ function lock {
   #echo $seatTest
   if [[ -z $seatTest ]]
   then
+    # TODO good choice of Redis commands
     redis-do "set ${show}:${seat} ${name}" &> /dev/null
     redis-do "EXPIRE ${show}:${seat} ${LOCK_TTL}" &> /dev/null
     echo "Seat was locked"
@@ -57,6 +59,7 @@ function book {
       exit 5
   fi
   seatTest=$(redis-do "get ${show}:${seat}")
+  # TODO Good
   if [[ ! -z $seatTest ]]
   then
     redis-do "set ${show}:${seat} ${name}"
