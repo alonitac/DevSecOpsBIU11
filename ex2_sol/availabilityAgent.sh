@@ -1,6 +1,9 @@
 #!/bin/bash
 
 TEST_PERIODICITY=5
+
+# TODO good solution
+
 while true
 do
   while read line
