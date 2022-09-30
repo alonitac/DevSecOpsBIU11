@@ -1,5 +1,7 @@
 TEST_PERIODICITY=5
 
+# TODO good solution Chananel
+
 while true
 do
   while read line
