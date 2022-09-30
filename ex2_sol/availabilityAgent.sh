@@ -1,6 +1,9 @@
 #!/bin/bash
 
 TEST_PERIODICITY=5
+
+# TODO the below line should be located inside the `while read` loop, otherwise the value of TEST_TIMESTAMP is the same for all tests
+# TODO other than that, good solution
 TEST_TIMESTAMP=$(($(date +%s%N)/1000000))
 
 while true
