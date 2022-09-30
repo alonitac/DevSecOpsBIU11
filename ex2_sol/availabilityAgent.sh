@@ -2,6 +2,8 @@
 
 TEST_PERIODICITY=5
 
+# TODO great solution Igal!
+
 while true
 do
     # your implementation here
