@@ -27,7 +27,7 @@ else
         fi
 
 
-done < host
+done < host  # FIXME the `< host` is redundant as you iterate the file using `for` loop
 
 
 
