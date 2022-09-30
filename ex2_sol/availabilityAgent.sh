@@ -1,6 +1,9 @@
 #!/bin/bash
 TEST_PERIODICITY=5
 
+
+# TODO good solution, try to follow indentation rule so the code would be more readable
+
 while true
 do
 while read line; do
