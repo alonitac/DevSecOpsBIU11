@@ -2,6 +2,8 @@
 
 TEST_PERIODICITY=5
 
+# TODO good solution Yehuda!
+
 while true
 do
       while read host
