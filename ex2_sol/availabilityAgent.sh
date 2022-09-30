@@ -2,8 +2,13 @@
 
 #run docker
 
+
+
 TEST_PERIODICITY=5
 IPFILE=~\ex2_sol\hosts
+
+# TODO the below line should be located inside the `while read` loop, otherwise the value of TIMESTAMP is the same for all tests
+# TODO other than that, good solution
 TIMESTAMP=$(echo $(($(date +%s%N)/1000000)))
 WORKING=1
 NOT_WORKING=0
