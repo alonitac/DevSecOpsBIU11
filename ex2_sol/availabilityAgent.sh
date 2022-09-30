@@ -1,5 +1,8 @@
 TEST_PERIODICITY=5
 #main loop
+
+# TODO good solution!
+
 while true;do
     for TESTED_HOST in $(cat ./hosts);do
         TEST_TIMESTAMP=$(date +%s%N)
