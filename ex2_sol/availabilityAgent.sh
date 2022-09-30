@@ -1,5 +1,7 @@
 TEST_PERIODICITY=5
 
+# TODO good solution Yinon, the outer while look is redundant
+
 while true
 do
    #!/bin/bash
