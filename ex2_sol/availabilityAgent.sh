@@ -2,6 +2,7 @@
 
 TEST_PERIODICITY=5
 
+# TODO good solution Ariel
 
 while true
 do
