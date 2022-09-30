@@ -35,6 +35,8 @@ function lock {
   # your implementation here ...
  checkSeatNotExceed "$seat"
 
+  # TODO Good! in Redis usually we separate nested key by `:` not `-`
+  # TOdO but the logic is correct
   if redis-do "exists book-$show-$seat" | grep -q "1"; then
         echo "Locking failed, seat is already booked"
 
@@ -62,6 +64,7 @@ function book {
   # your implementation here ...
  checkSeatNotExceed "$3"
 
+  # TODO The `setnx` command is good choice
   if [[ $(redis-do "get lock-$show-$seat") = "$name" ]]; then
 	if redis-do "setnx book-$show-$seat $name" | grep -q "1"; then
  		echo "Successfully booked this seat!"
@@ -85,6 +88,7 @@ function release {
   # your implementation here ...
  checkSeatNotExceed "$3"
 
+  # TODO Good
   if [[ $(redis-do "get lock-$show-$seat") = "$name" ]]; then
 	if redis-do "del lock-$show-$seat" | grep -q "1"; then
                 echo "Seat was released"
@@ -99,6 +103,7 @@ function reset {
   local show=$1
 
   # your implementation here ...
+# TODO Great, simple and clean
 for seat in $(seq 1 $HALL_CAPACITY)
   do
 	redis-do "del lock-$show-$seat"
