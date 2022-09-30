@@ -1,5 +1,7 @@
 TEST_PERIODICITY=5
 
+# TODO Great solution! well done for trying to implement the parallelism
+
 function ping_to_host {
   TESTED_HOST=$1
 
