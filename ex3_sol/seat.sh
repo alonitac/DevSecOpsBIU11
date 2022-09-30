@@ -25,7 +25,8 @@ function lock {
   GET_SHOW=$(redis-cli -u redis://localhost:6378/0 get $show:$seat)
 
   ### If seat lock time expired ###
-
+  # TODO the logic is good, but you have some syntax errors
+  # TODO the && operator can be used with [[  ]] if, not with [  ]
   if [ $LOCK_TTL -eq 0 && $seat <= $HALL_CAPACITY ]; then
 	  (redis-cli -u redis://localhost:6378/0 set $show:$seat $name)
   fi
@@ -54,6 +55,7 @@ function book {
   local show=$1
   local name=$2
   local seat=$3
+  # TODO what about checking if this seat was locked before booking it?
   GET_SHOW=$(redis-cli -u redis://localhost:6378/0 get $show:$seat)
   if  [[ $GET_SHOW == $name ]]; then
           echo "Successfully booked this seat!"
