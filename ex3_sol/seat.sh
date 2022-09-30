@@ -4,6 +4,7 @@ HALL_CAPACITY=300
 function checkSeatNotExceed {
   local seat=$1
 
+  # TODO Good!
   if [[ "$seat" -gt "$HALL_CAPACITY" || "$seat" -le 0 ]]; then
         exit 5
   fi
@@ -35,6 +36,7 @@ function lock {
   # your implementation here ...
   checkSeatNotExceed $3
 
+  # TODO Good choice of Redis commands
   if redis-do "exists book-$show-$seat" | grep -q "1"; then
         echo "Locking failed, seat is already booked"
 
@@ -62,6 +64,7 @@ function book {
   # your implementation here ...
   checkSeatNotExceed $3
 
+  # TODO Great
   if [[ $(redis-do "get lock-$show-$seat") = "$name" ]]; then
 	if redis-do "setnx book-$show-$seat $name" | grep -q "1"; then
  		echo "Successfully booked this seat!"
@@ -99,6 +102,7 @@ function reset {
   local show=$1
 
   # your implementation here ...
+  # TODO Good, very concise logic
   for seat in $(seq 1 $HALL_CAPACITY)
   do
 	redis-do "del lock-$show-$seat"
