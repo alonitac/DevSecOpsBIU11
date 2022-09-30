@@ -3,6 +3,7 @@ TEST_PERIODICITY=5
 while true
 do
 
+# TODO maybe `for TESTED_HOST in $(cat hosts)` ?
 for TESTED_HOST in hosts
 do
  bb=$(ping -c 1 -W 1 $TESTED_HOST | grep 'transmitted,' | awk '{print $4}')
