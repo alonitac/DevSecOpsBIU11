@@ -13,6 +13,7 @@ function redis-do {
 # This func verifies whether the seat number that has been chosen is valid (Place between 1 to HALL_CAPACITY)
 # If not, the program exits with status 5
 function seat_validation_check {
+  # TODO Good!
   local seat=$1
   if [[ ! "$seat" -lt "$HALL_CAPACITY" ]]; then
     echo "The seat you've chose is not valid. Please choose seat from 1 to $HALL_CAPACITY."
@@ -35,6 +36,7 @@ function lock {
   local book_status="$(redis-do "smembers $ticket:book")"
   local lock_status="$(redis-do "get $ticket")"
 
+  # TODO Great, well documented and the logic is clean
   # If this seat is already booked, print "Locking failed, seat is already booked"
   if [[ ! -z "$book_status" ]] # If not empty, the seat has been booked
   then
@@ -125,6 +127,7 @@ function reset {
   local show=$1
 
   # Get the values of the "lock" set (The tickets info)
+ # TODO Good choice of Redis command
   get_lock_keys="$(redis-do "smembers $show:lock")"
 
   # Release those tickets
