@@ -31,6 +31,7 @@ function lock {
     exit 5
     fi
 
+    # TODO Good, how could you implement the keys structure so you don't need to iterate over all seats for each action?
     declare -i len=`redis-do "LLEN  $show:seats"`
     for x in $(redis-do "LRANGE $show:seats 0 $len") ; do
         if [[ $seat -eq $x ]]; then
@@ -70,6 +71,7 @@ function book {
     exit 5
     fi
 
+    # TODO Good!
     declare -i len=`redis-do "LLEN  $show:seats"`
     for x in $(redis-do "LRANGE $show:seats 0 $len") ; do
         if [[ $seat -eq $x ]]; then
@@ -135,6 +137,7 @@ function reset {
     exit 5
     fi
 
+    # TODO Good!
     declare -i len=`redis-do "LLEN  $show:seats"`
     for x in $(redis-do "LRANGE $show:seats 0 $len") ; do
         redis-do "DEL $show:$x:lock" &> /dev/null
