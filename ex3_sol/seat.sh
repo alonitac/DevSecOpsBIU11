@@ -25,12 +25,16 @@ function lock {
   local seat=$3
 
   # your implementation here ...
+# TODO you can put the below code in a separate function and use it instead of repeat it in every function
 if [[ $seat -gt $HALL_CAPACITY ]]
 then
 exit 5
 fi
 
+# TODO try to follow indentation rule so the code would be more readable
 redis-do "KEYS *" > keys
+
+# TODO Why do you need to iterate over all key, can't you just access the key value by: `get $show:$name:$seat`?
 while read line
 do
 line_show=$(echo $line | cut -d ":" -f 1)
@@ -56,6 +60,7 @@ fi
 done < keys
 if [[ $test_var == 0 ]]
 then
+# TODO Good choice of Redis commands
 redis-do "set $show:$name:$seat lock" &> /dev/null
 redis-do "EXPIRE $show:$name:$seat $LOCK_TTL" &> /dev/null
 echo "Seat was locked"
@@ -93,6 +98,7 @@ then
 get_value=$(redis-do "get $line")
 if [[ $get_value == "lock" ]]
 then
+  # TODO Good!
 redis-do "set $show:$name:$seat book" &> /dev/null
 echo "Successfully booked this seat!"
 fi
@@ -138,6 +144,7 @@ then
 get_value=$(redis-do "get $line")
 if [[ $get_value == "lock" ]]
 then
+  # TODO Good!
 redis-do "del $show:$name:$seat" &> /dev/null
 echo "Seat was released"
 fi
