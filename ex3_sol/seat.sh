@@ -31,6 +31,7 @@ function lock {
   seat_validation_check "$seat"
 
   # Get ticket statuses
+  # TODO good structure of Redis key
   local ticket="$show:$seat"
   local book_status="$(redis-do "smembers $ticket:book")"
   local lock_status="$(redis-do "get $ticket")"
@@ -47,6 +48,7 @@ function lock {
 
   # Locking is possible only if this seat was not locked by other customer name.
   else
+    # TODO Great. well documented
     # The lock should be expired automatically after $LOCK_TTL seconds.
     redis-do "set $ticket $name ex $LOCK_TTL" &> /dev/null
     # Add the ticket to the "lock" set (For the reset function)
@@ -83,6 +85,7 @@ function book {
 
   # Booking is possible only if $2 was locked the seat before for this show.
   else
+    # TODO good.
     # Add the the name of the user to the "book" set
     redis-do "sadd $ticket:book $name" &> /dev/null
     # Remove the ticket from the "lock" set (For the reset function)
