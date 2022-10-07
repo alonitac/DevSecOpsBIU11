@@ -7,7 +7,13 @@ metadata:
 spec:
   containers:
     - name: youtube-app
-      image: <docker-image-name>:<tag>
+      image: myapp:0.0.1
+      resources:
+        requests:
+          memory: "100Mi"
+        limits:
+          memory: "200Mi"
+
 ---
 apiVersion: v1
 kind: Service
