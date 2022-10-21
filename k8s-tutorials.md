@@ -151,7 +151,7 @@ minikube start --driver=docker  --extra-config=kubelet.housekeeping-interval=10s
 3. Under `youtube-chat-app-deployment.yaml` add the following `resource` definition for the `youtube-app` container:
 ```yaml
 - name: youtube-app
-  image: <docker-image-name>:<tag>
+  image: public.ecr.aws/r7m7o9d4/myapp:0.0.5
   resources:
      limits:
         cpu: "200m"
@@ -161,7 +161,7 @@ minikube start --driver=docker  --extra-config=kubelet.housekeeping-interval=10s
 3. Build the image and deploy it in the cluster (update the `youtube-chat-app-deployment.yaml` according to the new image tag to apply the changes). 
 4. Now that the server is running with the new endpoint, create the autoscaler:
 ```shell
-kubectl apply -f k8s/youtube-chat-app-autoscale.yaml
+kubectl apply -f k8s/youtube-chat-app-autoscaler.yaml
 ```
 4. Next, see how the autoscaler reacts to increased load. To do this, you'll start a different Pod to act as a client. The container within the client Pod runs in an infinite loop, sending queries to the php-apache service.
 ```shell
@@ -190,6 +190,7 @@ We would like to deploy it in the k8s cluster.
 3. Deploy it using the `youtube-chat-app-multi.yaml` configuration file (does it work? why?).
 4. We would like to create a cluster [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) object to store the root user password for the MySQL database. Review the secret object in `k8s/mysql-secret.yaml` and apply it:
 ```shell
+change '<docker-image-name>:<tag>' to 'public.ecr.aws/r7m7o9d4/myapp:0.0.5'
 kubectl apply -f k8s/mysql-secret.yaml
 ```
 5. Deploy the MySQL deployment by applying `mysql-deployment.yaml` configuration file.
@@ -252,7 +253,7 @@ spec:
 
 The problem: the data of `mysql` deployment is not persistent.
 
-### (Optional - go over it if you feel comfortable with k8s core concepts) 1st try: [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+### 1st try (Optional - go over it if you feel comfortable with k8s core concepts): [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 
 A **PersistentVolume (PV)** is a piece of storage in the cluster that has been provisioned by an administrator or dynamically provisioned using [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/).
 
@@ -306,7 +307,7 @@ The address of MySQL will be: `mysql-0.mysql-svc-hl.default.svc.cluster.local:33
 
 ## Helm
 
-Helm is the package manager for Kubernetes
+Helm is the package manager for Kubernetes.
 The main big 3 concepts of helm are:
 
 - A **Chart** is a Helm package. It contains all the resource definitions necessary to run an application, tool, or service inside of a Kubernetes cluster.
@@ -361,9 +362,9 @@ Here is an illustration of how Fluent works in the k8s cluster?
 
 ![](img/fluent.png)
 
-Fluentd runs in the cluster as a [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/). A DaemonSet ensures that all nodes run a copy of a pod. That way, Fluentd can collect log information from every containerized applications easily in each k8s node.
+Fluentd runs in the cluster as a [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/). A DaemonSet ensures that all **nodes** run a copy of a **pod**. That way, Fluentd can collect log information from every containerized applications easily in each k8s node.
 
-We will deploy the Fluentd chart to collect containers logs to send them to Elasticsearch database.
+We will deploy the Fluentd chart to collect containers logs to send them to [Elasticsearch](https://www.elastic.co/what-is/elasticsearch) database.
 
 1. Visit the Fluentd Helm chart at https://github.com/fluent/helm-charts/tree/main/charts/fluentd
 2. Add the helm repo
@@ -379,28 +380,49 @@ helm install fluentd fluent/fluentd
 
 4. Watch and inspect the running containers under **Workloads** -> **DaemonSet**. Obviously, it doesn't work, as Fluent need to talk to an existed Elasticsearch database.  
 5. Elasticsearch db can be provisioned by applying `elasticsearch.yaml`.
+6. Create a YAML file called `fluentd-helm-values.yaml`. You should override the [following](https://github.com/fluent/helm-charts/blob/main/charts/fluentd/values.yaml#L379) default Helm value by:
+```yaml
+fileConfigs:
+  04_outputs.conf: |-
+    <label @OUTPUT>
+      <match **>
+        @type elasticsearch
+        host "<elasticsearch-host>"
+        logstash_format true
+        port <elasticsearch-port>
+      </match>
+    </label>
+```
+While replacing `<elasticsearch-host>` and `<elasticsearch-port>` with the hostname of Elasticsearch int the cluster.
+7. Finally, upgrade the `fluentd` release by `helm upgrade -f k8s/fluentd-helm-values.yaml fluentd fluent/fluentd` 
 
 ### Fluentd permissions in the cluster
 
-TBD 
+Have you wondered how does the Fluentd pods have access to other pods logs!? 
 
-[comment]: <> (- service account)
+This is a great point to learn something about k8s role and access control mechanism ([RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)). 
 
-[comment]: <> (- role)
+#### Role and ClusterRole
 
-[comment]: <> (- rolebinding)
+_Role_ or _ClusterRole_ contains rules that represent a set of permissions on the cluster (e.g. This Pod can do that action..). 
+A Role always sets permissions within a particular _namespace_
+ClusterRole, by contrast, is a non-namespaced resource.
+
+#### Service account 
+
+A _Service Account_ provides an identity for processes that run in a Pod.
+When you create a pod, if you do not specify a service account, it is automatically assigned the `default` service account in the same namespace.
+
+#### RoleBinding and ClusterRoleBinding
+
+A role binding grants the permissions defined in a role to a user or set of users.
+A RoleBinding may reference any Role in the same namespace. Alternatively, a RoleBinding can reference a ClusterRole and bind that ClusterRole to the namespace of the RoleBinding.
+
+---
+
+Observe the service account used by the fluentd Pods, observe their ClusterRole bound to them. 
 
 ## Visualize logs with Grafana
 
 1. Review the objects in `grafana.yaml` and apply.
-2. Visit grafana service and configure the Elasticsearch database to view all cluster logs.
-
-## Split and deploy the Youtube chat app in microservices
-
-TBD 
-
-[comment]: <> (- Worker and web-server)
-
-[comment]: <> (- RabbitMQ )
-
-[comment]: <> (- Autoscale workers)
+2. Visit grafana service and configure the Elasticsearch database to view all cluster logs (you may need to upgrade elasticsearch Docker image version).
