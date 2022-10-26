@@ -17,7 +17,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: youtube-app
-          image: <docker-image-name>:<tag>
+          image: public.ecr.aws/r7m7o9d4/myapp:0.0.5
           env:
            - name: DB_ROOT_PASS
              valueFrom:

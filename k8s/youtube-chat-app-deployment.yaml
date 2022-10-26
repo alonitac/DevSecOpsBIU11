@@ -5,7 +5,7 @@ metadata:
   labels:
     app: youtube-app
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: youtube-app
@@ -17,7 +17,12 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: youtube-app
-          image: <docker-image-name>:<tag>
+          image: public.ecr.aws/r7m7o9d4/myapp:0.0.5
+          resources:
+            limits:
+              cpu: "200m"
+            requests:
+              cpu: "100m"
 ---
 apiVersion: v1
 kind: Service
