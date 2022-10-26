@@ -25,6 +25,11 @@ Notes:
     - `USER_PWD` which is the password for the Mongo db defined in the `mongo-secret` Secret.
     - `DB_URL` which is the database URL of Mongo and defined in the `mongo-configs` ConfigMap.
 
+Visit the webapp service using port-forwarding:
+
+`kubectl port-forward svc/webapp 3001:3000`
+
+The service is available in http://localhost:3001
 
 Extensions:
 - Expose the service of the `webapp` Deployment as a NodePort service type, port `30200`. 
