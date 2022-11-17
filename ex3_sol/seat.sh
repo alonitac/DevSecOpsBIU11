@@ -1,5 +1,9 @@
+#! /bin/bash
+
 LOCK_TTL=600
 HALL_CAPACITY=300
+SECONDS=0
+HALL_COUNTER=0
 
 # This helper can be used to communicate with Redis
 # Usage example:
@@ -23,7 +27,14 @@ function lock {
   local name=$2
   local seat=$3
 
+
   # your implementation here ...
+      LOCK=$(redis-do "setnx $show:$seat $name EX 600")
+      if [[ $LOCK == "(integer) 0" ]]; then
+        echo "Hello $name. Seat $seat is locked for 10 minutes for show $show. please book your ticket"
+      else
+        echo "This seat is currently locked by other customer, try again later"
+      fi
 
 }
 
@@ -39,6 +50,17 @@ function book {
   local seat=$3
 
   # your implementation here ...
+  #get to redis and check if seat is locked"
+
+  RESULT=$(redis-do "setnx $show:$seat")
+  HALL_COUNTER=$(HALL_COUNTER + 1)
+  if [[ $RESULT == "(integer) 0" && $HALL_COUNTER -le $HALL_CAPACITY ]]; then
+    redis-do "setnx $book:$show:$seat $name"
+    echo "Successfully booked this seat!"
+  else echo "Booking failed, please lock the seat before"
+  fi
+
+
 
 }
 
@@ -54,6 +76,12 @@ function release {
   local seat=$3
 
   # your implementation here ...
+  RELEASE=redis-do "EXISTS $show:$seat $name"
+  if [[ $RELEASE = "(integer) 1" ]]; then
+    echo "The seat was released"
+  else
+    exit 0
+  fi
 
 }
 
